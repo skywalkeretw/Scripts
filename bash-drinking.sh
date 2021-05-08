@@ -217,27 +217,33 @@ getRandomMostLikely () {
 
 getAction () {
     local player=$(getRandomPlayer)
-    local task="$(( $RANDOM % 5 ))"
     local do=""
     local sipnum="$(( $PLAYERS -1 ))"
     local randsip="$(( $RANDOM % $sipnum + 1 ))"
+    local task="$(( $RANDOM % 6 ))"
     case $task in
         0)
-        do="take a sip of your drink"
+        do="take a sip of your drink!"
         ;;
 
         1)
-        do="distribute $sipnum sips between the others"
+        do="choose $sipnum sips to be shared with some or all of the others!"
         ;;
 
         2)
-        do="choose someone who has to take a sip"
+        do="choose someone who has to take a sip!"
         ;;
+
         3)
-        do="distribute $randsip sips between the others"
+        do="choose $randsip sips to be shared with some or all of the others!"
         ;;
+
         4)
-        do="choose someone who will distribute $randsip sips between everyone"
+        do="pick someone who will choose $randsip sips for everyone else!"
+        ;;
+        
+        5)
+        do="have a sip with everyone else!"
         ;;
     esac
     echo "${player} ${do}"
