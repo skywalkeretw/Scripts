@@ -1,6 +1,6 @@
 #! /bin/bash
 
-END= false
+#END=false
 PARAM=""
 PLAYER_LIST=()
 PLAYERS=0
@@ -8,6 +8,7 @@ MODE_TEXT_EN=""
 MODE_TEXT_DE=""
 MODE="all"
 LANG="en"
+FOLLOW=0
 
 NEVERHAVEIEVER=(
     "got a tattoo"
@@ -311,6 +312,11 @@ do
         shift # Remove --initialize from processing
         ;;
 
+        -f|--follow)
+        FOLLOW=1
+        shift # Remove --initialize from processing
+        ;;
+
         -n|--never)
         MODE="never"
         MODE_TEXT_EN="You are playing Never have I ever"
@@ -598,13 +604,16 @@ getRingOfFire () {
 # Greeting
 case $LANG in 
     de)
-        echo "#################################################"
+        echo "########################################################################"
         echo "#                                     "
         echo "#                Hallo!               "
         echo "#                               "
         echo "#        Wilkommen zu Bash Drinking     "
         echo "#    $MODE_TEXT_DE                         "
-        echo "#################################################"
+        echo "#         "
+        echo "#       drücke irgend eine taste um die nächste action zu bekommen       "
+        echo "#       Drücke 'q' um das spiel zu beenden                         "
+        echo "########################################################################"
         echo
     ;;
 
@@ -615,6 +624,9 @@ case $LANG in
         echo "#                               "
         echo "#        Welcome to Bash Drinking     "
         echo "#    $MODE_TEXT_EN                         "
+        echo "#                                            "
+        echo "#       Press any key to get next action       "
+        echo "#       Press 'q' to quit                         "
         echo "#################################################"
         echo
     ;;
@@ -633,9 +645,16 @@ if [ $PLAYERS -lt 2 ]; then
     exit 0
 fi
 
+read -rsn1
+if [ $FOLLOW = 1 ]; then
+    clear
+fi
+
 # Game Loop
 while true
 do
+
+    echo "------------------------------------------------------------------------------------------------------------------------------"
     case $MODE in
         all)
         GAME="$(( $RANDOM % 3 ))"
@@ -674,14 +693,18 @@ do
         getRandomMostLikely
         ;;
     esac
+    echo "------------------------------------------------------------------------------------------------------------------------------"
+    echo
     
     
 
     # Expect only one letter dont wait for submitting and dont writte back letter
-    sleep 0.5
+    sleep 0.2
     read -rsn1 INPUT
     if [ "$INPUT" = "q" ]; then
         exit 0
     fi
-
+    if [ $FOLLOW = 1 ]; then
+        clear
+    fi
 done
