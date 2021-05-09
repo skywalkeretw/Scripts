@@ -4,8 +4,10 @@ END= false
 PARAM=""
 PLAYER_LIST=()
 PLAYERS=0
-MSG=""
+MODE_TEXT_EN=""
+MODE_TEXT_DE=""
 MODE="all"
+LANG="en"
 
 NEVERHAVEIEVER=(
     "got a tattoo"
@@ -55,6 +57,55 @@ NEVERHAVEIEVER=(
     "lied to my boss"
     "got a tattoo I regretted"
     )
+
+NEVERHAVEIEVER_DE=(
+    "bekam ein Tattoo"
+    "jemanden bei einem Date versetzt"
+    "Hatte einen Strafzettel für zu schnelles Fahren"
+    "Jemandem eine SMS gegeistert"
+    "gelogen, um nicht zur Schule/Uni/Arbeit gehen zu müssen"
+    "einen falschen Namen angegeben"
+    "Jemanden per SMS abserviert"
+    "in öffentlichen Verkehrsmitteln krank gewesen"
+    "Jemanden in diesem Raum angelogen"
+    "einem Ex aus dem Nichts eine SMS geschickt"
+    "Bei einer Dating-App gelogen"
+    "Das Geschwisterchen eines Freundes geküsst"
+    "Wurde der Zutritt zu einem Club verweigert"
+    "eine Urlaubs-Romanze gehabt"
+    "die Zahnbürste einer anderen Person benutzt"
+    "in die Dusche gepinkelt"
+    "den neuen Partner eines Ex in den sozialen Medien gestalkt"
+    "aus einer Bar oder einem Club rausgeschmissen worden"
+    "mit der Ex eines Freundes ausgegangen"
+    "überfallen worden"
+    "einen Knochen gebrochen"
+    "gelogen, um den Club früher zu verlassen"
+    "jemandem übel mitgespielt"
+    "einen Prominenten geküsst"
+    "in einem Restaurant Essensreste von einem anderen Tisch gegessen"
+    "auf ein Blind Date gegangen"
+    "etwas gestohlen"
+    "betrogen worden"
+    "gegessen und gestrichen"
+    "Irgendwo unerlaubt eingedrungen"
+    "mehr als 200 Pfund für einen Abend ausgegeben"
+    "für einen Sportkurs bezahlt und nicht teilgenommen"
+    "die ganze Nacht durchgefeiert"
+    "bei einem Test oder einer Prüfung geschummelt"
+    "vorgetäuscht, jemand anderes zu sein"
+    "jemanden, den ich kenne, in der Öffentlichkeit ignoriert"
+    "ein Kleidungsstück ruiniert, das ich mir von einem Freund geliehen habe"
+    "eine Fahrt per Anhalter gemacht"
+    "mich auf ein Festival oder in einen Club geschlichen"
+    "im Spiel gelogen"
+    "in der Öffentlichkeit gepinkelt"
+    "gelogen, jemanden zu küssen"
+    "das Gesetz gebrochen"
+    "betrunken aus meinem Haus ausgesperrt worden"
+    "Meinen Chef angelogen"
+    "Habe mir ein Tattoo stechen lassen, das ich bereue"
+)
 
 MOSTLIKELY=(
     "kill someone accidentally?"
@@ -127,26 +178,129 @@ MOSTLIKELY=(
     "drink the most?"
 )
 
+MOSTLIKELY_DE=(
+    "jemanden versehentlich töten?"
+    "noch nie im Kino gewesen sein?"
+    "ein berühmter Schauspieler/eine berühmte Schauspielerin werden?"
+    "weglaufen, um beim Zirkus mitzumachen?"
+    "von einem fahrenden Zug springen?"
+    "paranoid sein?"
+    "der sportlichste sein?"
+    "Romantische Filme sehen?"
+    "Eine Stripperin werden?"
+    "wegen Belästigung eines Polizeibeamten festgenommen werden?"
+    "Unsicher sein?"
+    "von einem Bären gerissen werden?"
+    "am emotionalsten sein?"
+    "spielsüchtig sein?"
+    "der Erste gewesen sein, der einen Typen/ein Mädchen geküsst hat?"
+    "am besten in Mathe sein?"
+    "bei ihrem ersten Date unbeholfen sein?"
+    "erfolgreicher sein als Bill Gates?"
+    "als die mächtigste Person der Welt gelten?"
+    "einen Geist treffen?"
+    "bei der Arbeit betrunken sein?"
+    "der Reichste sein?"
+    "Eine Bank ausrauben?"
+    "ein Wrestler werden?"
+    "am längsten leben?"
+    "in einen Schwulenclub gehen?"
+    "ein Sadist sein?"
+    "in eine Schlägerei geraten?"
+    "Schlafwandeln?"
+    "sich aus den dümmsten Gründen aufregen?"
+    "mit Mord davonkommen?"
+    "CEO einer Firma werden, die zu den 100 größten der Welt gehört?"
+    "der sarkastischste Mensch sein?"
+    "eine Woche lang nicht duschen?"
+    "es lieben, Gerüchte zu verbreiten?"
+    "immer fröhlich sein?"
+    "am kreativsten sein?"
+    "einen Freund in der Öffentlichkeit blamieren?"
+    "keinen Computer haben?"
+    "einen Dreier versuchen?"
+    "wichtige Geburtstage vergessen?"
+    "sich um die anderen kümmern, wenn sie krank sind?"
+    "sich in den/die beste/n Freund/in verlieben?"
+    "niemals ein Baby haben wollen?"
+    "zuerst heiraten?"
+    "einen Prominenten heiraten?"
+    "jedes Buch in einer Schulbibliothek lesen?"
+    "etwas Nützliches erfinden?"
+    "es einfach finden, eine Wahl zu gewinnen?"
+    "einen Weltkrieg auslösen?"
+    "ein Kind adoptieren?"
+    "der erste sein, der in einer Zombie-Apokalypse stirbt?"
+    "mehrere Leute gleichzeitig daten?"
+    "Seltsame Dinge in der Öffentlichkeit tun?"
+    "im falschen Moment lachen?"
+    "An etwas Dummen sterben?"
+    "Dem Militär beitreten?"
+    "Rauchen?"
+    "nicht in der Lage sein, ein Geheimnis für nur 30 Minuten zu bewahren?"
+    "einer Gang beitreten?"
+    "Drogen nehmen?"
+    "mit Tieren reden?"
+    "in eine psychiatrische Klinik eingewiesen werden?"
+    "gegen eine Wand schlagen?"
+    "Sich auf der Arbeit krank melden, nur um auf ein Konzert zu gehen?"
+    "Ein Alkoholiker werden?"
+    "Im Knast landen?"
+    "Am meisten trinken?"
+)
+
 help () {
-    echo "###########################################################"
-    echo "#"
-    echo "#             Welcome to Bash Drinking     "
-    echo "#                     HELP ME!"
-    echo "#"
-    echo "#     Enter at least 2 Players to start"
-    echo "#     After Games has started press Any button to continue"
-    echo "#     press 'q' to quit"
-    echo "#"
-    echo "#     Modes:"
-    echo "#     -n | --never     Never Have I Ever"
-    echo "#     -d | --drink     The drinking game"
-    echo "#     -r | --ring      Ring of Fire"
-    echo "#     -m | --most      Most Likely"
-    echo "#     IF yo dont specify a mode all modes are used"
-    echo "#    "
-    echo "###########################################################"
+    case $LANG in 
+    de)
+        echo "####################################################################################"
+        echo "#"
+        echo "#             Wilkommen beim Bash Drinking     "
+        echo "#                     Hier ist die Hilfe"
+        echo "#"
+        echo "#     Gib mindestens 2 spieler an um spielen zu können"
+        echo "#     nachdem das spiel begonnen hat drücken irgendeine Taste um fortzufahren"
+        echo "#     drücke 'q' um das spiel zu beenden"
+        echo "#"
+        echo "#     Spiel arten:"
+        echo "#     -n | --never     ich hab noch nie"
+        echo "#     -d | --drink     Das Trinkspiel"
+        echo "#     -r | --ring      Ring of Fire"
+        echo "#     -m | --most      Am wahrscheinlichsten"
+        echo "#     "
+        echo "#     Wenn du kein Spiel modus angibst werden alle verwendet"
+        echo "#    "        
+        echo "#     -h| --help      Hilfe"
+        echo "#     -l| --lang      ändere Sprache zu Deutsch"
+        echo "####################################################################################"
+    ;;
+
+    *)
+        echo "###########################################################"
+        echo "#"
+        echo "#             Welcome to Bash Drinking     "
+        echo "#                     HELP ME!"
+        echo "#"
+        echo "#     Enter at least 2 Players to start"
+        echo "#     After Games has started press Any button to continue"
+        echo "#     press 'q' to quit"
+        echo "#"
+        echo "#     Modes:"
+        echo "#     -n | --never     Never Have I Ever"
+        echo "#     -d | --drink     The drinking game"
+        echo "#     -r | --ring      Ring of Fire"
+        echo "#     -m | --most      Most Likely"
+        echo "#     IF yo dont specify a mode all modes are used"
+        echo "#    "
+        echo "#     -h| --help      Help"
+        echo "#     -l| --lang      change Language to German"
+        echo "###########################################################"
+    ;;
+    esac
+
+
     exit 0
 }
+
 
 # Loop through arguments and process them
 for arg in "$@"
@@ -159,32 +313,39 @@ do
 
         -n|--never)
         MODE="never"
-        MSG="You are playing Never have I ever"
+        MODE_TEXT_EN="You are playing Never have I ever"
+        MODE_TEXT_DE="Du spielst jetzt ich hab noch nie"
         shift # Remove --initialize from processing
         ;;
 
         -d|--drink)
         MODE="drink"
-        MSG="You are playing the drinking game"
+        MODE_TEXT_EN="You are playing the drinking game"
+        MODE_TEXT_DE="Du spielst nun das Trinkspiel"
         shift # Remove --initialize from processing
         ;;
 
         -r| --ring)
         MODE="ring"
-        MSG="You are playing Ring of Fire"
+        MODE_TEXT_EN="You are playing Ring of Fire"
+        MODE_TEXT_DE="Du spielst nun Ring of Fire"
+
         shift
         ;;
 
         -m| --most)
         MODE="most"
-        MSG="You are playing Who is most Likely"
+        MODE_TEXT_EN="You are playing Who is most Likely"
+        MODE_TEXT_DE="Du Spielst nun Am wahrscheinlischsten"
         shift
         ;;
 
-        -p|--param)
-        PARAM="$2"
-        shift # Remove argument name from processing
-        shift # Remove argument value from processing
+        -l|--lang)
+        LANG="de"
+        shift
+        
+        #shift # Remove argument name from processing
+        #shift # Remove argument value from processing
         ;;
 
         *)
@@ -195,6 +356,9 @@ do
     esac
 done
 
+
+
+
 # returns a Random Player
 getRandomPlayer () {
     local num="$(( $RANDOM % $PLAYERS ))"
@@ -204,24 +368,78 @@ getRandomPlayer () {
 
 #Games
 getRandomNeverHaveIEver () {
-    local l=${#NEVERHAVEIEVER[@]}
-    local num=$(( $RANDOM % $l))
-    echo "Never have I ever ${NEVERHAVEIEVER[$num]}"
+
+    case $LANG in 
+    de)
+        local l=${#NEVERHAVEIEVER_DE[@]}
+        local num=$(( $RANDOM % $l))
+        echo "Ich habe noch nie ${NEVERHAVEIEVER_DE[$num]}"
+    ;;
+
+    *)
+        local l=${#NEVERHAVEIEVER[@]}
+        local num=$(( $RANDOM % $l))
+        echo "Never have I ever ${NEVERHAVEIEVER[$num]}"
+    ;;
+    esac
+
+    
 }
 
 getRandomMostLikely () {
-    local l=${#MOSTLIKELY[@]}
-    local num=$(( $RANDOM % $l ))
-    echo "Who is most likely to ${MOSTLIKELY[$num]}"
+    case $LANG in 
+    de)
+        local l=${#MOSTLIKELY_DE[@]}
+        local num=$(( $RANDOM % $l ))
+        echo "Wer würde am wahrscheinlichsten ${MOSTLIKELY_DE[$num]}"
+    ;;
+
+    *)
+        local l=${#MOSTLIKELY[@]}
+        local num=$(( $RANDOM % $l ))
+        echo "Who is most likely to ${MOSTLIKELY[$num]}"
+    ;;
+    esac
+    
 }
 
 getAction () {
     local player=$(getRandomPlayer)
     local do=""
-    local sipnum="$(( $PLAYERS -1 ))"
+    local sipnum="$(( $PLAYERS - 1 ))"
     local randsip="$(( $RANDOM % $sipnum + 1 ))"
     local task="$(( $RANDOM % 6 ))"
-    case $task in
+    case $LANG in 
+    de)
+        case $task in
+        0)
+        do="nim ein schluck!!"
+        ;;
+
+        1)
+        do="verteile $sipnum schlücke an die anderen!"
+        ;;
+
+        2)
+        do="Wähle jemand der einen schluck trinken muss!"
+        ;;
+
+        3)
+        do="verteile $randsip schlücke an die anderen!"
+        ;;
+
+        4)
+        do="wähle jemand der nun $randsip schlücke verteilen darf"
+        ;;
+        
+        5)
+        do="trinke mit den anderen ein schluck!"
+        ;;
+    esac
+    ;;
+
+    *)
+            case $task in
         0)
         do="take a sip of your drink!"
         ;;
@@ -246,6 +464,9 @@ getAction () {
         do="have a sip with everyone else!"
         ;;
     esac
+    ;;
+    esac
+
     echo "${player} ${do}"
 }
 
@@ -253,6 +474,65 @@ getAction () {
 getRingOfFire () {
     local player=$(getRandomPlayer)
     local card=$(( $RANDOM % 13 + 1))
+        case $LANG in 
+    de)
+    case $card in
+        1)
+        do="Wasserfall! Starte mit $player und gehe die liste durch -> ${PLAYER_LIST[*]}"
+        ;;
+
+        2)
+        do="2 for you, $player wähle jemand der trinken muss"
+        ;;
+
+        3)
+        do="3 for me, $player muss trinken"
+        ;;
+
+        4)
+        do="Alle Mädels mussen trinken"
+        ;;
+
+        5)
+        do="$player is the Thumb Master - Wenn $player seinen Daumen auf dem tisch legt müssen alle ihn nachmachen der letzte muss trinken"
+        ;;
+
+        6)
+        do="Alle Jungs müssen trinken"
+        ;;
+
+        7)
+        do="Seven to Heaven - Der letzte der seine hände in die luft streckt muss trinken"
+        ;;
+
+        8)
+        do="$player Wähle einen trinkbuddy - Jedesmal wenn $player trinkt muss sein Trinkbuddy mit trinken"
+        ;;
+
+        9)
+        do="Rhyme! fang mit $player an list is -> ${PLAYER_LIST[*]} - der der kein Rhyme darauf hat mus trinken"
+        ;;
+
+        10)
+        do="$player wähle ein Thema liste ist -> ${PLAYER_LIST[*]}"
+        ;;
+
+        11)
+        do="$player Erfinde eine regel"
+        ;;
+
+        12)
+        do="$player ist nun Question master"
+        ;;
+
+        13)
+        do="Jeder trinkt!"
+        ;;
+
+    esac
+    ;;
+
+    *)
     case $card in
         1)
         do="Waterfall! start with $player list is -> ${PLAYER_LIST[*]}"
@@ -305,27 +585,53 @@ getRingOfFire () {
         13)
         do="Everyone Drinks"
         ;;
-
     esac
+    ;;
+    esac
+
 
     echo "$do"
 }
 
+
+
 # Greeting
-echo "#################################################"
-echo "#                                     "
-echo "#                HELLO!               "
-echo "#                               "
-echo "#        Welcome to Bash Drinking     "
-echo "#    $MSG                         "
-echo "#################################################"
-echo
+case $LANG in 
+    de)
+        echo "#################################################"
+        echo "#                                     "
+        echo "#                Hallo!               "
+        echo "#                               "
+        echo "#        Wilkommen zu Bash Drinking     "
+        echo "#    $MODE_TEXT_DE                         "
+        echo "#################################################"
+        echo
+    ;;
+
+    *)
+        echo "#################################################"
+        echo "#                                     "
+        echo "#                HELLO!               "
+        echo "#                               "
+        echo "#        Welcome to Bash Drinking     "
+        echo "#    $MODE_TEXT_EN                         "
+        echo "#################################################"
+        echo
+    ;;
+esac
 
 if [ $PLAYERS -lt 2 ]; then
-    echo "find some more players"
+    case $LANG in 
+    de)
+        echo "Such dir mehr Spieler"
+    ;;
+
+    *)
+        echo "find some more players"
+    ;;
+    esac
     exit 0
 fi
-read -rsn1
 
 # Game Loop
 while true
