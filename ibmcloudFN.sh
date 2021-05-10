@@ -5,6 +5,8 @@
 # target default: ibmcloud target -g Default
 # traget rest: ibmcloud target --cf  
 # create a action: ibmcloud fn action create <action_name> <action_file>
+# invoke action: ibmcloud fn action invoke <action_name>
+# get activation: ibmcloud fn get activation <activation_ID>
 
 case $1 in
     go)
