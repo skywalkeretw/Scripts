@@ -1,5 +1,11 @@
 #! /bin/bash
 
+#
+# login to IBM Cloud: ibmcloud login 
+# target default: ibmcloud target -g Default
+# traget rest: ibmcloud target --cf  
+# create a action: ibmcloud fn action create <action_name> <action_file>
+
 case $1 in
     go)
         echo 'package main
