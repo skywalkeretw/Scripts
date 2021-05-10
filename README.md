@@ -19,3 +19,5 @@ IF yo dont specify a mode all modes are used
 
 swich to german: -l | --lang
 
+## [IBM Cloud Functions](ibmcloudFN)
+Generates sinple IBM cloud Functions Snippets
