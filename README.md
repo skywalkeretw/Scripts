@@ -19,5 +19,14 @@ IF yo dont specify a mode all modes are used
 
 swich to german: -l | --lang
 
-## [IBM Cloud Functions](ibmcloudFN)
+## [IBM Cloud Functions](ibmcloudFN.sh)
 Generates sinple IBM cloud Functions Snippets
+- go
+- php
+- python
+- ruby
+- swift
+- node
+```bash
+./ibmcloudFN.sh <Programming_language>
+```

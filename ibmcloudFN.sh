@@ -8,8 +8,17 @@
 # invoke action: ibmcloud fn action invoke <action_name>
 # get activation: ibmcloud fn get activation <activation_ID>
 
+help () {
+echo 'Help use ohne of these params:
+    go, php, node, python, swift, ruby  
+'
+}
+
+echo "creating"
+
 case $1 in
     go)
+    FILENAME="main.go"
         echo 'package main
 
 import "fmt"
@@ -27,10 +36,11 @@ func Main(params map[string]interface{}) map[string]interface{} {
     fmt.Println("hello Go action")
     // return the output JSON
     return msg
-}' > main.go
+}' > $FILENAME
     ;;
 
     php)
+    FILENAME="main.php"
         echo '<?php
 
 function main(array $args) : array
@@ -39,23 +49,26 @@ function main(array $args) : array
     $greeting = "Hello $name!";
     echo $greeting;
     return ["greeting" => $greeting];
-}' > main.php
+}' > $FILENAME
     ;;
 
     node)
+    FILENAME="main.js"
         echo 'function main(params) {
     return { message: "Hello World" };
-}' > main.js
+}' > $FILENAME
     ;;
 
     python)
+    FILENAME="main.py"
         echo 'import sys
 
 def main(dict):
-    return { "message": "Hello world" }' > main.py
+    return { "message": "Hello world" }' > $FILENAME
     ;;
 
     swift)
+    FILENAME="main.swift"
     echo 'struct Input: Codable {
     let name: String?
 }
@@ -65,16 +78,29 @@ struct Output: Codable {
 func main(param: Input, completion: (Output?, Error?) -> Void) -> Void {
     let result = Output(greeting: "Hello \(param.name ?? "stranger")!")
     completion(result, nil)
-}' > main.swift
+}' > $FILENAME
     ;;
 
     ruby)
+    FILENAME="main.rb"
         echo 'def main(param)
 name = param["name"] || "stranger"
 greeting = "Hello #{name}!"
 puts greeting
 { "greeting" => greeting }
-end' > main.rb
+end' > $FILENAME
+    ;;
+    
+    help | -h | --help)
+        help
+        exit 1
+    ;;
+
+    *)
+        echo "$1 doesn't exist"
+        exit 1
     ;;
 
 esac
+
+echo "Creating $1 template in $FILENAME"
