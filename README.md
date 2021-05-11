@@ -30,3 +30,7 @@ Generates sinple IBM cloud Functions Snippets
 ```bash
 ./ibmcloudFN.sh <Programming_language>
 ```
+
+## [Tic Tac Toe](tic-tac-toe.sh)
+Terminal Tic Tac Toe
+use the letters to select the field or the numbers on the numberpad (a = 1 ...)
