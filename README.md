@@ -34,3 +34,10 @@ Generates sinple IBM cloud Functions Snippets
 ## [Tic Tac Toe](tic-tac-toe.sh)
 Terminal Tic Tac Toe
 use the letters to select the field or the numbers on the numberpad (a = 1 ...)
+
+## [Git Music](git-music-ctl.sh)
+A script used to manage your music on a Android, Linux or Mac
+Used to clone your git repo where your Music (or other data) is stored
+[Termux](https://play.google.com/store/apps/details?id=com.termux) is required to run the script on Android. All dependencies are automatically installed
+
+execute on Android with `bash git-music-ctl.sh`
