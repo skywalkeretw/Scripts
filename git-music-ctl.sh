@@ -83,22 +83,73 @@ fi
 
 # clone git repo if doesnt already exist
 # pull latest changes from master if repo exists
-if [[ ! -d "${GLPPATH}${GLPDIR}" ]] ; then 
-    echo "${GLPDIR} doesnt exist in ${GLPPATH}"
-    echo "Cloning ${GLPREPO} into ${GLPPATH}"
-    cd $GLPPATH
-    git clone ${GLPREPO}
-else
-    echo "Pulling new Music into ${GLPPATH}${GLPDIR}"
-    cd "${GLPPATH}${GLPDIR}"
-    git pull origin master
-    GIT_RESPONSE=$?
-    
-    if [[ $GIT_RESPONSE -ne 0 ]] ; then 
-        echo "An error Accured while trying to pull Changes From Master"
-        exit 1
+
+
+case EXPRESSION in
+
+  pull)
+    # clone git repo if doesnt already exist
+    # pull latest changes from master if repo exists
+    if [[ ! -d "${GLPPATH}${GLPDIR}" ]] ; then 
+        echo "${GLPDIR} doesnt exist in ${GLPPATH}"
+        echo "Cloning ${GLPREPO} into ${GLPPATH}"
+        cd $GLPPATH
+        git clone ${GLPREPO}
+    else
+        echo "Pulling new Music into ${GLPPATH}${GLPDIR}"
+        cd "${GLPPATH}${GLPDIR}"
+        git pull origin master
+        GIT_RESPONSE=$?
+        
+        if [[ $GIT_RESPONSE -ne 0 ]] ; then 
+            echo "An error Accured while trying to pull Changes From Master"
+            exit 1
+        fi
     fi
-fi
-echo
-echo "Run Successful"
+    echo
+    echo "Run Successful"
+    ;;
+
+  push)
+    #Pushes changes to the cover images to the repo
+    if [[ ! -d "${GLPPATH}${GLPDIR}" ]] ; then 
+        echo "${GLPDIR} doesnt exist in ${GLPPATH}"
+        echo 
+        echo "run: git-music-ctl.sh pull"
+    else
+        echo "Pushing new Cover images to into ${GLPPATH}${GLPDIR}"
+        cd "${GLPPATH}${GLPDIR}"
+    
+        git status
+        read -p "Are you sure? " -n 1 -r
+        echo    
+        if [[ ! $REPLY =~ ^[Yy]$ ]]
+        then
+            echo "Changes have been discarded!"
+            exit 0
+        fi
+
+        git add .
+        GIT_STATUS=$(git status) 
+        COMMIT_MESSAGE="Adding Cover images  $(date) --- $GIT_STATUS"
+        git commit -m $COMMIT_MESSAGE
+        git push origin master
+        GIT_RESPONSE=$?
+        
+        if [[ $GIT_RESPONSE -ne 0 ]] ; then 
+            echo "An error Accured while trying to push Changes to Master"
+            exit 1
+        fi
+    fi
+    echo
+    echo "Run Successful"
+    ;;
+
+  *)
+    STATEMENTS
+    ;;
+esac
+
+
+
 exit 0

@@ -38,6 +38,17 @@ use the letters to select the field or the numbers on the numberpad (a = 1 ...)
 ## [Git Music](git-music-ctl.sh)
 A script used to manage your music on a Android, Linux or Mac
 Used to clone your git repo where your Music (or other data) is stored
-[Termux](https://play.google.com/store/apps/details?id=com.termux) is required to run the script on Android. All dependencies are automatically installed
+[Termux](https://play.google.com/store/apps/details?id=com.termux) is required to run the script on Android. All dependencies are automatically installed.
+[BlackPlayer EX](https://play.google.com/store/apps/details?id=com.kodarkooperativet.blackplayerex&hl=en&gl=US) Is the Used Music Player app For Android
 
-execute on Android with `bash git-music-ctl.sh`
+Execute on Android
+Pull new music from Repo
+```bash
+bash git-music-ctl.sh pull
+```
+Push Music Changes to Repo
+```bash
+bash git-music-ctl.sh push
+```
+
+ 
