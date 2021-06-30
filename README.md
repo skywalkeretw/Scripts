@@ -50,5 +50,34 @@ Push Music Changes to Repo
 ```bash
 bash git-music-ctl.sh push
 ```
-
+## [IBM Cloud Functions and Code Engine](IBM-FN-CE/README.md)
  
+## [Crypt](crypt.sh)
+Encrypt Files using Public & Private Key Methode or with Key and IV
+
+**Using Key & IV**
+Generate Key and IV and store them in the specified file
+```bash
+./crypt.sh enc g <file>
+```
+Encrypt File using Key and IV
+```bash
+./crypt.sh enc e <file_to_encrypt> <key> <iv>
+```
+Decrypt File using Key and IV
+```bash
+./crypt.sh enc e <file_to_decrypt> <key> <iv>
+```
+**Using RSA Public & Private Key**
+Generate Key and IV and store them in the specified file
+```bash
+./crypt.sh rsa g <file.pem>
+```
+Encrypt File using Key and IV
+```bash
+./crypt.sh rsa e <public_key.pem> <file_to_encrypt> 
+```
+Decrypt File using Key and IV
+```bash
+./crypt.sh rsa d <private_key.pem> <file_to_decrypt>
+```
