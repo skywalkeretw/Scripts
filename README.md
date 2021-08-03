@@ -81,3 +81,5 @@ Decrypt File using Key and IV
 ```bash
 ./crypt.sh rsa d <private_key.pem> <file_to_decrypt>
 ```
+
+## [ZSH Themes](ZSH_themes)

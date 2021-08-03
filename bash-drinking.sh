@@ -693,6 +693,7 @@ do
         most)
         getRandomMostLikely
         ;;
+
     esac
     echo "----------------------------------------------"
     echo
