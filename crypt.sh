@@ -2,6 +2,30 @@
 MODE=$1
 ACTION=$2
 
+help() {
+    echo "Crypto Script used for encrypting and decrypting files"
+    echo "MODE: enc | rsa"
+    echo "ACTION: generate | g, encrypt | e, decrypt | d"
+
+    echo ""
+    echo "examples:"
+    echo "$0 enc generate FILE "
+    echo "$0 enc encrypt FILE KEY IV"
+    echo "$0 enc decrypt FILE KEY IV"
+
+    echo "$0 enc generate FILE "
+    echo "$0 enc encrypt FILE KEY"
+    echo "$0 enc decrypt FILE KEY"
+}
+
+while getopts ":h" option; do
+   case $option in
+      h) # display Help
+         help
+         exit;;
+   esac
+done
+
 case $MODE in
     enc)
         FILE=$3
