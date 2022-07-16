@@ -38,7 +38,7 @@ use the letters to select the field or the numbers on the numberpad (a = 1 ...)
 ## [Git Music](git-music-ctl.sh)
 A script used to manage your music on a Android, Linux or Mac
 Used to clone your git repo where your Music (or other data) is stored
-[Termux](https://play.google.com/store/apps/details?id=com.termux) is required to run the script on Android. All dependencies are automatically installed.
+[Termux](https://github.com/termux/termux-app/releases) is required to run the script on Android. All dependencies are automatically installed. Use the the `universal apk`.
 [BlackPlayer EX](https://play.google.com/store/apps/details?id=com.kodarkooperativet.blackplayerex&hl=en&gl=US) Is the Used Music Player app For Android
 
 Execute on Android
@@ -52,6 +52,12 @@ bash git-music-ctl.sh push
 ```
 ## [IBM Cloud Functions and Code Engine](IBM-FN-CE/README.md)
  
+## [Hacker](hacker.sh)
+Use this powerfull script to make you look like you hacked into the Pentagon or any other organisations you want
+```bash
+hacker.sh <Target>
+```
+
 ## [Crypt](crypt.sh)
 Encrypt Files using Public & Private Key Methode or with Key and IV
 
