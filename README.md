@@ -35,7 +35,7 @@ Generates sinple IBM cloud Functions Snippets
 Terminal Tic Tac Toe
 use the letters to select the field or the numbers on the numberpad (a = 1 ...)
 
-## [Git Music](music/git-music-ctl.sh)
+## [Git Music](music/)
 A script used to manage your music on a Android, Linux or Mac
 Used to clone your git repo where your Music (or other data) is stored. 
 
