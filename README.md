@@ -35,9 +35,15 @@ Generates sinple IBM cloud Functions Snippets
 Terminal Tic Tac Toe
 use the letters to select the field or the numbers on the numberpad (a = 1 ...)
 
-## [Git Music](git-music-ctl.sh)
+## [Git Music](music/git-music-ctl.sh)
 A script used to manage your music on a Android, Linux or Mac
-Used to clone your git repo where your Music (or other data) is stored
+Used to clone your git repo where your Music (or other data) is stored. 
+
+Docker image is also provided to download convert and tag Music run this command inside the folder where your music is stored for best result will count mp3 files and use that as track number :
+```bash
+    docker run -v $(pwd):/out lukeroy/youtube2mp3 <Song Name> <Artist> <Album Name> <URL>
+```
+
 [Termux](https://github.com/termux/termux-app/releases) is required to run the script on Android. All dependencies are automatically installed. Use the the `universal apk`.
 [BlackPlayer EX](https://play.google.com/store/apps/details?id=com.kodarkooperativet.blackplayerex&hl=en&gl=US) Is the Used Music Player app For Android
 
