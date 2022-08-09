@@ -5,6 +5,7 @@ RUN apt update  \
     && apt install -y \
     curl \
     ffmpeg \
+    python-mutagen \
     python3-mutagen
 
 RUN curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-dl \
