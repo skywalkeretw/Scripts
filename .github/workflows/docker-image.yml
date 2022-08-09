@@ -28,9 +28,6 @@ jobs:
           context: music
           push: true
           tags: lukeroy/youtube2mp3:latest
-
-      - name: Pre 
-        run: cp music/download.sh music-fn/download.sh 
       
       - name: Build and push lukeroy/music-fn
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
