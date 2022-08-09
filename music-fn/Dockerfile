@@ -10,7 +10,7 @@ RUN apt update  \
 RUN curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-dl \
     && chmod +x /usr/local/bin/youtube-dl
 
-RUN curl -L -o /usr/local/bin/music https://github.com/skywalkeretw/Scripts/blob/master/music/download.sh
+RUN curl -o /usr/local/bin/music https://raw.githubusercontent.com/skywalkeretw/Scripts/master/music/download.sh
 
 RUN chmod +x /usr/local/bin/music
 
