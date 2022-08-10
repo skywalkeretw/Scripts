@@ -17,10 +17,10 @@ def main(params):
         f.close()
     os.chmod(sshdir + '/id_rsa', 0o600)
     os.system('ssh-keyscan -H gitlab.com >> ' + sshdir + '/known_hosts')
- 
+
     # Clone the Repository
     print("---> Clone Repository")
-    musicdir = '/music'
+    musicdir = '/playlist'
     repoURL = "git@gitlab.com:skywalker_etw/good-life-playlist.git"
     repo = git.Repo.clone_from(repoURL, musicdir)
     os.chdir(musicdir)
@@ -41,7 +41,8 @@ def main(params):
     
     # Download and Tag Song to git repository
     print("---> Run music Script")
-    cmdString = 'music \"' + params["song"] + '\" \"' + params["artist"] + '\" \"' + params["album"] + '\" \"' + params["url"] + '\"'
+    cmdString = f'music \"{params["song"]}\" \"{params["artist"]}\" \"{params["album"]}\" \"{params["url"]}\"'
+    print("--->", cmdString)
     os.system(cmdString)
 
     # # Add and Commit changes
@@ -64,4 +65,3 @@ def main(params):
         "url": params["url"],
         "branch": branch
     }
-
