@@ -21,7 +21,7 @@ def main(params):
     # Clone the Repository
     print("---> Clone Repository")
     musicdir = '/playlist'
-    repoURL = "git@gitlab.com:skywalker_etw/good-life-playlist.git"
+    repoURL = params["repourl"]
     repo = git.Repo.clone_from(repoURL, musicdir)
     os.chdir(musicdir)
 
