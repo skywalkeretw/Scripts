@@ -17,6 +17,12 @@ import uuid
 # }
 
 def main(params):
+    # Check Keys
+    if all (k in params for k in ("key", "repourl", "username", "email", "song", "artist", "album", "url")):
+        print("---> All Keys Are Set")
+    else:
+        print("---> Keys are missing")
+
 
     # setup SSH Connection to git 
     print("---> Setting Up Connection to git")
@@ -24,16 +30,27 @@ def main(params):
     if not os.path.exists(sshdir):
         os.mkdir(sshdir)
         print("Create %s", sshdir )
+    else:
+        print("---> .ssh dir exists")
+
     with open( sshdir + '/id_rsa', 'w') as f:
         f.write(params["key"])
         f.close()
+    
     os.chmod(sshdir + '/id_rsa', 0o600)
-    os.system(f'ssh-keyscan -H {repoURL.split("@",1)[1].split(":",1)[0]} >>  {sshdir} /known_hosts')
+    repoURL = params["repourl"]
+
+    add2hosts = f'ssh-keyscan -H {repoURL.split("@",1)[1].split(":",1)[0]} >>  {sshdir}/known_hosts'
+    os.system(add2hosts)
+
 
     # Clone the Repository
     print("---> Clone Repository")
     musicdir = '/playlist'
-    repoURL = params["repourl"]
+    if os.path.exists(musicdir):
+        os.rmdir(musicdir)
+        print(f"---> Deleting {musicdir} so clone will work")
+
     repo = git.Repo.clone_from(repoURL, musicdir)
     os.chdir(musicdir)
 

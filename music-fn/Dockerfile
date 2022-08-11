@@ -15,6 +15,8 @@ RUN curl -o /usr/local/bin/music https://raw.githubusercontent.com/skywalkeretw/
 
 RUN chmod +x /usr/local/bin/music
 
+RUN mkdir /root/.ssh
+
 RUN pip install \
     --upgrade pip \
     gitpython
