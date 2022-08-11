@@ -2,9 +2,21 @@ import git
 import os, sys, stat
 import uuid
 
+# Required Params and their usage 
+# key, repourl, username and email can be set as default so they dont need to be sent with every request
+#
+# params = {
+#     "key": "SSH Private Key without password used for git",
+#     "repourl": "Git clone ssh url",
+#     "username": "Git Username used to identify commiter",
+#     "email": "Git email used to identify commiter",
+#     "song": "Song Name",
+#     "artist":"Artist Name",
+#     "album":"Album Name",
+#     "url":"Youtube Video URL"
+# }
 
 def main(params):
-    # print(params)
 
     # setup SSH Connection to git 
     print("---> Setting Up Connection to git")
@@ -16,7 +28,7 @@ def main(params):
         f.write(params["key"])
         f.close()
     os.chmod(sshdir + '/id_rsa', 0o600)
-    os.system('ssh-keyscan -H gitlab.com >> ' + sshdir + '/known_hosts')
+    os.system(f'ssh-keyscan -H {repoURL.split("@",1)[1].split(":",1)[0]} >>  {sshdir} /known_hosts')
 
     # Clone the Repository
     print("---> Clone Repository")
