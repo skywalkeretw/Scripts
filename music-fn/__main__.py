@@ -48,7 +48,7 @@ def main(params):
     # # Add and Commit changes
     print("---> Add and Commit changes")
     repo.git.add('--all')
-    repo.git.commit('-m',  'Add: '+ params["song"])
+    repo.git.commit('-m',  f'Add: {params["song"]} from {params["artist"]}')
 
     # Push changes
     print("---> Push changes")
