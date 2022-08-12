@@ -17,12 +17,14 @@ import uuid
 # }
 
 def main(params):
+    print("---> Start")
+    
     # Check Keys
+    print("---> Checking Param Keys")
     if all (k in params for k in ("key", "repourl", "username", "email", "song", "artist", "album", "url")):
         print("---> All Keys Are Set")
     else:
         print("---> Keys are missing")
-
 
     # setup SSH Connection to git 
     print("---> Setting Up Connection to git")
@@ -74,7 +76,7 @@ def main(params):
     print("--->", cmdString)
     os.system(cmdString)
 
-    # # Add and Commit changes
+    # Add and Commit changes
     print("---> Add and Commit changes")
     repo.git.add('--all')
     repo.git.commit('-m',  f'Add: {params["song"]} from {params["artist"]}')
@@ -82,15 +84,10 @@ def main(params):
     # Push changes
     print("---> Push changes")
     repo.git.push('origin', branch)
-
-    # repo.git.push("--set-upstream", "origin", branch)
     
     print("---> Finished")
     return {
-        "result": "Success full",
-        "song": params["song"],
-        "artist": params["artist"],
-        "album": params["album"],
+        "result": f'Successfully downloaded {params["song"]} - {params["album"]} by {params["artist"]}',
         "url": params["url"],
         "branch": branch
     }
