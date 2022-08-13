@@ -12,29 +12,27 @@ import shutil
 #     "username": "Git Username used to identify commiter",
 #     "email": "Git email used to identify commiter",
 #     "token": "gitlab Token",
-#     "song": "Song Name",
-#     "artist":"Artist Name",
-#     "album":"Album Name",
-#     "url":"Youtube Video URL"
+#     "music" [{
+#           "song": "Song Name",
+#           "artist":"Artist Name",
+#           "album":"Album Name",
+#           "url":"Youtube Video URL"
+#     }]
 # }
 
 def main(params):
     print("---> Start")
-    key = repoURL = username = email = token = song = artist = album = url = ""
 
     # Check Keys
     print("---> Checking Params")
-    if all (k in params for k in ("key", "repourl", "username", "email", "song", "artist", "album", "url", "token")):
+    if all (k in params for k in ("key", "repourl", "username", "email", "token", "music")): #"song", "artist", "album", "url",
         print("---> All Keys Are Set")
         key = params["key"]             # SSH Private Key without password used for git
         repoURL = params["repourl"]     # Git clone ssh url
         username = params["username"]   # Git Username used to identify commiter
         email = params["email"]         # Git email used to identify commiter
         token = params["token"]         # Gitlab Token
-        song = params["song"]           # Song Name
-        artist = params["artist"]       # Artist Name
-        album = params["album"]         # Album Name
-        url = params["url"]             # Youtube Video URL
+        music = params["music"]         # Array of Music
     else:
         print("---> Params are missing")
         return {
@@ -83,37 +81,67 @@ def main(params):
     repo.git.branch(branch)
     repo.git.checkout(branch)
 
-    
-    # Download and Tag Song to git repository
-    print("---> Run music Script")
-    cmdString = f'music \"{song}\" \"{artist}\" \"{album}\" \"{url}\"'
-    print("--->", cmdString)
-    os.system(cmdString)
+    # Download all the songs in the list
+    commitStr = "Adding Music to playlist:\n"
+    failedStr = ""
+    successfulDownloads = 0
+    for m in music:
+        if not all (k in params for k in ("song", "artist", "album", "url")): 
+            print("---> Params are missing")
+
+        song = m["song"]           # Song Name
+        artist = m["artist"]       # Artist Name
+        album = m["album"]         # Album Name
+        url = m["url"]             # Youtube Video URL
+
+        # Download and Tag Song to git repository
+        print(f"---> Run music Script for: {song} - {artist} - {album} - {url}")
+        cmdString = f'music \"{song}\" \"{artist}\" \"{album}\" \"{url}\"'
+        code = os.system(cmdString)
+
+        if code == 0:
+            print(f"---> Downloaded and Tagged {song} by {artist}")
+            successfulDownloads += 1
+            commitStr += f'\nSong: {song}\nArtist: {artist}\nAlbum: {album}\nURL: {url}'
+        else:
+            print(f"---> Failed to Download and Tag {song} from {url}")
+            failedStr += f'Failed to download {song} - {url}'
+
+    # If all Downloads fail end Function
+    if successfulDownloads == 0:
+        print("---> Failed to Download all Songs")
+        return {
+            "result": 'Failed to Download all Songs',
+            "failed": failedStr,
+        }
 
     # Add and Commit changes
     print("---> Add and Commit changes")
     repo.git.add('--all')
-    repo.git.commit('-m',  f'Add: {song} from {artist}\n\nSong: {song}\nArtist: {artist}\nAlbum: {album}\nURL: {url}')
-
+    repo.git.commit('-m',  commitStr)
+    
     # Push changes
     print("---> Push changes")
     repo.git.push('origin', branch)
 
     # Create Merge Request
     if hostname == "gitlab.com":
-        print(f"---> Create Merge Request for {hostname}")
+        print(f"---> Login to {hostname} cli")
         loginStr = f"glab auth login -t {token} -h {hostname}"
-        os.system(loginStr)
-
-        mTitle = f'Merging {song} from {artist}'
-        mDescription = f'Adding {song} - {album} from {artist} '
-        mergeRequestStr = f"glab mr create --title \"{mTitle}\" --description \"{mDescription}\" | grep {hostname}"
-        mergeOut = os.popen(mergeRequestStr).read()
+        glabCode = os.system(loginStr)
         
+        if glabCode == 0: 
+            print(f"---> Create Merge Request for {hostname}")
+            mTitle = f'Merging {song} from {artist}'
+            mDescription = f'Adding {song} - {album} from {artist} '
+            mergeRequestStr = f"glab mr create --title \"{mTitle}\" --description \"{mDescription}\" | grep {hostname}"
+            mergeOut = os.popen(mergeRequestStr).read()
+            
 
     print("---> Finished")
     return {
         "result": f'Successfully downloaded {song} - {album} by {artist}',
+        "failed": failedStr,
         "url": mergeOut.replace("\n", ""),
         "branch": branch
     }
