@@ -22,6 +22,8 @@ import shutil
 
 def main(params):
     print("---> Start")
+    glabv = os.popen("glab -v").read()
+    print(glabv)
     # Check Keys
     print("---> Checking Params")
     if all (k in params for k in ("key", "repourl", "username", "email", "token", "music")): #"song", "artist", "album", "url",
@@ -36,7 +38,8 @@ def main(params):
             print("---> Music is not a list")
             return {
                 "result": f'Music is not a list'
-            }        
+            }
+
     else:
         print("---> Params are missing")
         return {
@@ -134,6 +137,7 @@ def main(params):
         loginStr = f"glab auth login -t {token} -h {hostname}"
         glabCode = os.system(loginStr)
         print(f"---> Gitlab login code: {glabCode}")
+
         if glabCode == 0: 
             print(f"---> Create Merge Request for {hostname}")
             mTitle = f'Merging new Music into branch {branch}'
@@ -141,13 +145,13 @@ def main(params):
             mergeRequestStr = f"glab mr create --title \"{mTitle}\" --description \"{mDescription}\" | grep {hostname}"
             mergeOut = os.popen(mergeRequestStr).read()
             print(f"---> Merge Request URL: {mergeOut}")
+
         else:
             print(f"---> Failed to login to {hostname}")
             return {
                 "result": "Failed to log into gitlab to create merge request" 
             }
             
-
     print("---> Finished")
     return {
         "result": f'Successfully downloaded Music',
