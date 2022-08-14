@@ -22,7 +22,7 @@ import shutil
 
 def main(params):
     print("---> Start")
-    glabv = os.system("glab -v")
+    glabv = os.system("ls -l")
     print(f"glab -v: {glabv}")
     return {
         "ok" "maybe"
