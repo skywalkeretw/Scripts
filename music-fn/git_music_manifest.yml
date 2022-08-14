@@ -6,10 +6,10 @@ packages:
         docker: lukeroy/music-fn:latest
         web: true
         annotations:
-          require-whisk-auth: -whiskauth-
+          require-whisk-auth: "-whiskauth-"
         limits:
-           memorySize: 512 
-           timeout: 600000
+          memorySize: 512 
+          timeout: 600000
         inputs:
           repourl: "-repourl-"
           email: "-email-"
