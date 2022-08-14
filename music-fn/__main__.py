@@ -24,6 +24,9 @@ def main(params):
     print("---> Start")
     glabv = os.popen("glab -v").read()
     print(glabv)
+    return {
+        "ok" "maybe"
+    }
     # Check Keys
     print("---> Checking Params")
     if all (k in params for k in ("key", "repourl", "username", "email", "token", "music")): #"song", "artist", "album", "url",
