@@ -22,6 +22,7 @@ import shutil
 
 def main(params):
     print("---> Start")
+    print(params)
 
     # Check Keys
     print("---> Checking Params")
@@ -37,8 +38,7 @@ def main(params):
             print("---> Music is not a list")
             return {
                 "result": f'Music is not a list'
-            }
-            
+            }        
     else:
         print("---> Params are missing")
         return {
