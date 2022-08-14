@@ -2,7 +2,7 @@ packages:
   default:
     actions:
       gitMusic:
-        function: music-fn/__main__.py
+        function: __main__.py
         docker: lukeroy/music-fn:latest
         web: true
         annotations:
