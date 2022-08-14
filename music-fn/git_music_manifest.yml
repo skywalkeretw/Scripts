@@ -14,5 +14,5 @@ packages:
           repourl: "-repourl-"
           email: "-email-"
           username: "-username-"
-          key: "-sshkey-"
+          #key: "-sshkey-"
           token: "-token-"

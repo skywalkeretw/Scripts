@@ -34,23 +34,32 @@ jobs:
       - name: Target Functions Namespace
         run: ibmcloud fn namespace target ${{ secrets.IBMCLOUD_NAMESPACE }}
 
-      - name: Sed Whisk Auth
-        run: sed -i 's/-whiskauth-/${{ secrets.FN_AUTH }}/g' music-fn/git_music_manifest.yml
+      # - name: Sed Whisk Auth
+      #   run: sed -i 's/-whiskauth-/${{ secrets.FN_AUTH }}/g' music-fn/git_music_manifest.yml
 
-      - name: Sed Repo URL
-        run: sed -i 's|-repourl-|${{ secrets.FN_REPOURL }}|g' music-fn/git_music_manifest.yml
+      # - name: Sed Repo URL
+      #   run: sed -i 's|-repourl-|${{ secrets.FN_REPOURL }}|g' music-fn/git_music_manifest.yml
       
-      - name: Sed E-Mail
-        run: sed -i 's/-email-/${{ secrets.FN_EMAIL }}/g' music-fn/git_music_manifest.yml
+      # - name: Sed E-Mail
+      #   run: sed -i 's/-email-/${{ secrets.FN_EMAIL }}/g' music-fn/git_music_manifest.yml
 
-      - name: Sed Username
-        run: sed -i 's/-username-/${{ secrets.FN_USERNAME }}/g' music-fn/git_music_manifest.yml
+      # - name: Sed Username
+      #   run: sed -i 's/-username-/${{ secrets.FN_USERNAME }}/g' music-fn/git_music_manifest.yml
 
-      - name: Sed Token
-        run: sed -i 's/-token-/${{ secrets.FN_TOKEN }}/g' music-fn/git_music_manifest.yml
+      # - name: Sed Token
+      #   run: sed -i 's/-token-/${{ secrets.FN_TOKEN }}/g' music-fn/git_music_manifest.yml
 
-      - name: Sed Api Key
-        run: sed -i 's|-sshkey-|${{ secrets.FN_KEY }}|g' music-fn/git_music_manifest.yml
+      # - name: Sed Api Key
+      #   run: sed -i 's|-sshkey-|${{ secrets.FN_KEY }}|g' music-fn/git_music_manifest.yml
+
+      - name: Set Params for
+        run: |
+          sed -i 's/-whiskauth-/${{ secrets.FN_AUTH }}/g' music-fn/git_music_manifest.yml
+          sed -i 's|-repourl-|${{ secrets.FN_REPOURL }}|g' music-fn/git_music_manifest.yml
+          sed -i 's/-email-/${{ secrets.FN_EMAIL }}/g' music-fn/git_music_manifest.yml
+          sed -i 's/-username-/${{ secrets.FN_USERNAME }}/g' music-fn/git_music_manifest.yml
+          sed -i 's/-token-/${{ secrets.FN_TOKEN }}/g' music-fn/git_music_manifest.yml
+      #    sed -i 's|-sshkey-|${{ secrets.FN_KEY }}|g' music-fn/git_music_manifest.yml
 
       - name: deploy action
         run: ibmcloud fn deploy --manifest music-fn/git_music_manifest.yml
