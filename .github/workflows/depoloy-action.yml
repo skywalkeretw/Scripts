@@ -50,7 +50,7 @@ jobs:
         run: sed -i 's/-token-/${{ secrets.FN_TOKEN }}/g' music-fn/git_music_manifest.yml
 
       - name: Sed Api Key
-        run: sed -i 's/-sshkey-/${{ secrets.FN_KEY }}/g' music-fn/git_music_manifest.yml
+        run: sed -i 's|-sshkey-|${{ secrets.FN_KEY }}|g' music-fn/git_music_manifest.yml
 
       - name: deploy action
         run: ibmcloud fn deploy --manifest music-fn/git_music_manifest.yml
