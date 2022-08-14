@@ -22,6 +22,7 @@ import shutil
 
 def main(params):
     print("---> Start")
+    print(params)
     # Check Keys
     print("---> Checking Params")
     if all (k in params for k in ("key", "repourl", "username", "email", "token", "music")): #"song", "artist", "album", "url",
@@ -37,18 +38,11 @@ def main(params):
             return {
                 "result": f'Music is not a list'
             }
-
     else:
         print("---> Params are missing")
         return {
             "result": f'Params are missing',
         }
-
-    glabv = os.system("ls -l")
-    print(f"ls -l: {glabv}")
-    return {
-        "ok" "maybe"
-    }
 
     # setup SSH Connection to git 
     print("---> Setting Up Connection to git")
@@ -68,6 +62,11 @@ def main(params):
     add2hosts = f'ssh-keyscan -H {hostname} >>  {sshdir}/known_hosts'
     os.system(add2hosts)
 
+    glabv = os.system("glab -v")
+    print(f"---> glab: {glabv}")
+    return {
+        "ok" "maybe"
+    }
 
     # Clone the Repository
     musicdir = '/playlist'
