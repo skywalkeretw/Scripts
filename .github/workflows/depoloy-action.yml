@@ -19,6 +19,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
       - name: install ibmcloud cli
         run: curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
 
