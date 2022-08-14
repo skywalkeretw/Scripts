@@ -1,0 +1,29 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "master" branch
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+  workflow_dispatch:
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: install ibmcloud cli
+        run: curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
+
+      - name: Login to ibm cloud cli
+        run: ibmcloud login -a ${{ secrets.ApiEndpoint }} -r ${{ secrets.Region }} -g ${{ secrets.Group }} --apikey ${{ secrets.APIkey }}
+        
+      - name: deploy action
+        run: ibmcloud fn deploy --manifest music-fn/git_music_manifest.yml
