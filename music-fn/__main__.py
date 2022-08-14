@@ -86,7 +86,7 @@ def main(params):
     repo.git.checkout(branch)
 
     # Download all the songs in the list
-    commitStr = "Adding Music to playlist:\n"
+    commitStr = "Adding Music to playlist:"
     failedStr = ""
     successfulDownloads = 0
     for m in music:
@@ -122,6 +122,7 @@ def main(params):
     # Add and Commit changes
     print("---> Add and Commit changes")
     repo.git.add('--all')
+    print("--->", commitStr)
     repo.git.commit('-m',  commitStr)
     
     # Push changes
