@@ -141,6 +141,11 @@ def main(params):
             mergeRequestStr = f"glab mr create --title \"{mTitle}\" --description \"{mDescription}\" | grep {hostname}"
             mergeOut = os.popen(mergeRequestStr).read()
             print(f"---> Merge Request URL: {mergeOut}")
+        else:
+            print(f"---> Failed to login to {hostname}")
+            return {
+                "result": "Failed to log into gitlab to create merge request" 
+            }
             
 
     print("---> Finished")
