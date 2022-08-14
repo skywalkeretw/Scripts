@@ -22,7 +22,6 @@ import shutil
 
 def main(params):
     print("---> Start")
-    print(params)
     # Check Keys
     print("---> Checking Params")
     if all (k in params for k in ("key", "repourl", "username", "email", "token", "music")): #"song", "artist", "album", "url",
@@ -60,13 +59,14 @@ def main(params):
     os.chmod(sshdir + '/id_rsa', 0o600)
     hostname = repoURL.split("@",1)[1].split(":",1)[0]
     add2hosts = f'ssh-keyscan -H {hostname} >>  {sshdir}/known_hosts'
-    os.system(add2hosts)
-
-    glabv = os.system("glab -v")
-    print(f"---> glab: {glabv}")
-    return {
-        "ok" "maybe"
-    }
+    sshcode = os.system(add2hosts)
+    if sshcode == 0:
+        print("---> Connection to gitlab confirmed")
+    else:
+        print("---> failed to Connect to Gitlab")
+        return {
+            "error": "failed to connect to Gitlab"
+        }
 
     # Clone the Repository
     musicdir = '/playlist'
@@ -135,30 +135,30 @@ def main(params):
     repo.git.push('origin', branch)
 
     # Create Merge Request
-    if hostname == "gitlab.com":
-        print(f"---> Login to {hostname} cli")
-        loginStr = f"glab auth login -t {token} -h {hostname}"
-        glabCode = os.system(loginStr)
-        print(f"---> Gitlab login code: {glabCode}")
+    # if hostname == "gitlab.com":
+    #     print(f"---> Login to {hostname} cli")
+    #     loginStr = f"glab auth login -t {token} -h {hostname}"
+    #     glabCode = os.system(loginStr)
+    #     print(f"---> Gitlab login code: {glabCode}")
 
-        if glabCode == 0: 
-            print(f"---> Create Merge Request for {hostname}")
-            mTitle = f'Merging new Music into branch {branch}'
-            mDescription = f'Adding Music into master branch from {branch}'
-            mergeRequestStr = f"glab mr create --title \"{mTitle}\" --description \"{mDescription}\" | grep {hostname}"
-            mergeOut = os.popen(mergeRequestStr).read()
-            print(f"---> Merge Request URL: {mergeOut}")
+    #     if glabCode == 0: 
+    #         print(f"---> Create Merge Request for {hostname}")
+    #         mTitle = f'Merging new Music into branch {branch}'
+    #         mDescription = f'Adding Music into master branch from {branch}'
+    #         mergeRequestStr = f"glab mr create --title \"{mTitle}\" --description \"{mDescription}\" | grep {hostname}"
+    #         mergeOut = os.popen(mergeRequestStr).read()
+    #         print(f"---> Merge Request URL: {mergeOut}")
 
-        else:
-            print(f"---> Failed to login to {hostname}")
-            return {
-                "result": "Failed to log into gitlab to create merge request" 
-            }
+    #     else:
+    #         print(f"---> Failed to login to {hostname}")
+    #         return {
+    #             "result": "Failed to log into gitlab to create merge request" 
+    #         }
             
     print("---> Finished")
     return {
         "result": f'Successfully downloaded Music',
         "failed": failedStr,
-        "url": mergeOut.replace("\n", ""),
+        # "url": mergeOut.replace("\n", ""),
         "branch": branch
     }
