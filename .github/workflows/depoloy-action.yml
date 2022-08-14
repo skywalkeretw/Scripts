@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Deploy gitMusic Function
 
 # Controls when the workflow will run
 on:
@@ -25,6 +25,9 @@ jobs:
       - name: Login to ibm cloud cli
         run: ibmcloud login -a ${{ secrets.IBMCLOUD_ENDPOINT }} -r ${{ secrets.IBMCLOUD_REGION }} -g ${{ secrets.IBMCLOUD_RESOURCE }} --apikey ${{ secrets.IBMCLOUD_APIKEY }}
       
+      - name: Install cloud-functions CLI
+        run: ibmcloud plugin install cloud-functions
+
       - name: Target Functions Namespace
         run: ibmcloud fn namespace target ${{ secrets.IBMCLOUD_NAMESPACE }}
 
