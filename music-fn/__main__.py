@@ -22,7 +22,7 @@ import shutil
 
 def main(params):
     print("---> Start")
-    glabv = os.popen("glab").read()
+    glabv = os.popen("ls -l").read()
     print(glabv)
     return {
         "ok" "maybe"
