@@ -36,12 +36,12 @@ jobs:
 
       - name: Set
         run: | 
-          sed "s/-whiskauth-/${{ secrets.FN_AUTH }}/" music-fn/git_music_manifest.yml
-          sed "s/-repourl-/${{ secrets.FN_REPOURL }}/" music-fn/git_music_manifest.yml
-          sed "s/-email-/${{ secrets.FN_EMAIL }}/" music-fn/git_music_manifest.yml
-          sed "s/-username-/${{ secrets.FN_USERNAME }}/" music-fn/git_music_manifest.yml
-          sed "s/-key-/${{ secrets.FN_KEY }}/" music-fn/git_music_manifest.yml
-          sed "s/-token-/${{ secrets.FN_TOKEN }}/" music-fn/git_music_manifest.yml
+          sed -e "s/-whiskauth-/${{ secrets.FN_AUTH }}/" music-fn/git_music_manifest.yml
+          sed -e "s/-repourl-/${{ secrets.FN_REPOURL }}/" music-fn/git_music_manifest.yml
+          sed -e "s/-email-/${{ secrets.FN_EMAIL }}/" music-fn/git_music_manifest.yml
+          sed -e "s/-username-/${{ secrets.FN_USERNAME }}/" music-fn/git_music_manifest.yml
+          sed -e "s/-key-/${{ secrets.FN_KEY }}/" music-fn/git_music_manifest.yml
+          sed -e "s/-token-/${{ secrets.FN_TOKEN }}/" music-fn/git_music_manifest.yml
 
       - name: deploy action
         run: ibmcloud fn deploy --manifest music-fn/git_music_manifest.yml
