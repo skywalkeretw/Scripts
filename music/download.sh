@@ -11,10 +11,10 @@ youtube-dl \
     --audio-format "mp3" \
     -o "${FILENAME}.%(ext)s" \
     ${URL}
-EXITCODE=$?
-echo "----- Finished Downloading: ${FILENAME} -----"
+DOWNEXITCODE=$?
 
-if [[ $EXITCODE == "0" ]]; then
+if [[ "$DOWNEXITCODE" == "0" ]]; then
+    echo "----- Finished Downloading: ${FILENAME} -----"
     echo "----- Started Tagging: ${FILENAME} -----"
     mid3v2 \
         --song="${SONG}" \
@@ -22,8 +22,16 @@ if [[ $EXITCODE == "0" ]]; then
         --album="${ALBUM}" \
         --track="$(ls ./*mp3 | wc -l)" \
         "${FILENAME}.mp3"
-    echo "----- Finished Tagging: ${FILENAME} -----"
+    TAGEXITCODE=$?    
+    if [[ "$TAGEXITCODE" == "0" ]]; then
+        echo "----- Finished Tagging: ${FILENAME} -----"
+    else
+        echo "----- Failed Tagging: ${FILENAME} -----"
+        exit 1
+    fi
+
 else
+    echo "----- Failed Downloading: ${FILENAME} -----"
     exit 1
 fi
 
