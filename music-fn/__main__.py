@@ -133,7 +133,7 @@ def main(params):
         print(f"---> Login to {hostname} cli")
         loginStr = f"glab auth login -t {token} -h {hostname}"
         glabCode = os.system(loginStr)
-        
+        print(f"---> Gitlab login code: {glabCode}")
         if glabCode == 0: 
             print(f"---> Create Merge Request for {hostname}")
             mTitle = f'Merging new Music into branch {branch}'
