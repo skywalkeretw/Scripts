@@ -140,6 +140,7 @@ def main(params):
             mDescription = f'Adding Music into master branch from {branch}'
             mergeRequestStr = f"glab mr create --title \"{mTitle}\" --description \"{mDescription}\" | grep {hostname}"
             mergeOut = os.popen(mergeRequestStr).read()
+            print(f"---> Merge Request URL: {mergeOut}")
             
 
     print("---> Finished")
