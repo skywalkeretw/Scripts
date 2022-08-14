@@ -59,7 +59,7 @@ jobs:
           sed -i 's/-email-/${{ secrets.FN_EMAIL }}/g' music-fn/git_music_manifest.yml
           sed -i 's/-username-/${{ secrets.FN_USERNAME }}/g' music-fn/git_music_manifest.yml
           sed -i 's/-token-/${{ secrets.FN_TOKEN }}/g' music-fn/git_music_manifest.yml
-      #    sed -i 's|-sshkey-|${{ secrets.FN_KEY }}|g' music-fn/git_music_manifest.yml
+          sed -i 's|-sshkey-|${{ secrets.FN_KEY }}|g' music-fn/git_music_manifest.yml
 
       - name: deploy action
         run: ibmcloud fn deploy --manifest music-fn/git_music_manifest.yml

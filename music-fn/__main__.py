@@ -22,8 +22,6 @@ import shutil
 
 def main(params):
     print("---> Start")
-    print(params)
-
     # Check Keys
     print("---> Checking Params")
     if all (k in params for k in ("key", "repourl", "username", "email", "token", "music")): #"song", "artist", "album", "url",
