@@ -22,11 +22,6 @@ import shutil
 
 def main(params):
     print("---> Start")
-    glabv = os.system("ls -l")
-    print(f"glab -v: {glabv}")
-    return {
-        "ok" "maybe"
-    }
     # Check Keys
     print("---> Checking Params")
     if all (k in params for k in ("key", "repourl", "username", "email", "token", "music")): #"song", "artist", "album", "url",
@@ -48,6 +43,12 @@ def main(params):
         return {
             "result": f'Params are missing',
         }
+
+    glabv = os.system("ls -l")
+    print(f"ls -l: {glabv}")
+    return {
+        "ok" "maybe"
+    }
 
     # setup SSH Connection to git 
     print("---> Setting Up Connection to git")
