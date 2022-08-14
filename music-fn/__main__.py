@@ -122,7 +122,6 @@ def main(params):
     # Add and Commit changes
     print("---> Add and Commit changes")
     repo.git.add('--all')
-    print("--->", commitStr)
     repo.git.commit('-m',  commitStr)
     
     # Push changes
@@ -137,15 +136,15 @@ def main(params):
         
         if glabCode == 0: 
             print(f"---> Create Merge Request for {hostname}")
-            mTitle = f'Merging {song} from {artist}'
-            mDescription = f'Adding {song} - {album} from {artist} '
+            mTitle = f'Merging new Music into branch {branch}'
+            mDescription = f'Adding Music into master branch from {branch}'
             mergeRequestStr = f"glab mr create --title \"{mTitle}\" --description \"{mDescription}\" | grep {hostname}"
             mergeOut = os.popen(mergeRequestStr).read()
             
 
     print("---> Finished")
     return {
-        "result": f'Successfully downloaded {song} - {album} by {artist}',
+        "result": f'Successfully downloaded Music',
         "failed": failedStr,
         "url": mergeOut.replace("\n", ""),
         "branch": branch
