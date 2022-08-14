@@ -11,8 +11,8 @@ packages:
            memorySize: 512 
            timeout: 600000
         inputs:
-          repourl: -repourl-
-          email: -email-
-          username: -username-
-          key: -sshkey-
-          token: -token-
+          repourl: "-repourl-"
+          email: "-email-"
+          username: "-username-"
+          key: "-sshkey-"
+          token: "-token-"
