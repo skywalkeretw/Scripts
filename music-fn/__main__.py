@@ -21,6 +21,9 @@ import shutil
 # }
 
 def main(params):
+    return {
+        "hello": "world"
+    }
     print("---> Start")
     glabv = os.popen("glab -v").read()
     print(glabv)
