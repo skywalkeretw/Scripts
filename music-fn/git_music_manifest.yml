@@ -3,7 +3,7 @@ packages:
     actions:
       gitMusic:
         function: __main__.py
-        docker: lukeroy/music-fn:latest
+        docker: lukeroy/music-fn:1.0.0
         web: true
         annotations:
           require-whisk-auth: "-whiskauth-"
