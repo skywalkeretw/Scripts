@@ -1,0 +1,18 @@
+packages:
+  default:
+    actions:
+      gitMusic:
+        function: music-fn/__main__.py
+        docker: lukeroy/music-fn:latest
+        web: true
+        annotations:
+          require-whisk-auth: 
+        limits:
+           memorySize: 512 
+           timeout: 600000
+        inputs:
+          repourl: 
+          email: 
+          username: 
+          key: 
+          token: 

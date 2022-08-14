@@ -33,6 +33,12 @@ def main(params):
         email = params["email"]         # Git email used to identify commiter
         token = params["token"]         # Gitlab Token
         music = params["music"]         # Array of Music
+        if not isinstance(music, list):
+            print("---> Music is not a list")
+            return {
+                "result": f'Music is not a list'
+            }
+            
     else:
         print("---> Params are missing")
         return {
