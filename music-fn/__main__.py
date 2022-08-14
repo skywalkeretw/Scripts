@@ -48,7 +48,7 @@ def main(params):
     sshdir = '/root/.ssh'
     if not os.path.exists(sshdir):
         os.mkdir(sshdir)
-        print("Create %s", sshdir )
+        print(f"---> Create {sshdir} dir")
     else:
         print("---> .ssh dir exists")
 
