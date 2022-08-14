@@ -23,7 +23,10 @@ jobs:
         run: curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
 
       - name: Login to ibm cloud cli
-        run: ibmcloud login -a ${{ secrets.ApiEndpoint }} -r ${{ secrets.Region }} -g ${{ secrets.Group }} --apikey ${{ secrets.APIkey }}
-        
+        run: ibmcloud login -a ${{ secrets.IBMCLOUD_ENDPOINT }} -r ${{ secrets.IBMCLOUD_REGION }} -g ${{ secrets.IBMCLOUD_RESOURCE }} --apikey ${{ secrets.IBMCLOUD_APIKEY }}
+      
+      - name: Target Functions Namespace
+        run: ibmcloud fn namespace target ${{ secrets.IBMCLOUD_NAMESPACE }}
+
       - name: deploy action
         run: ibmcloud fn deploy --manifest music-fn/git_music_manifest.yml
