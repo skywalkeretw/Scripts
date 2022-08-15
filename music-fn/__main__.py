@@ -1,4 +1,5 @@
 import git
+import gitlab
 import os, sys, stat
 import uuid
 import shutil
@@ -154,7 +155,17 @@ def main(params):
     #         return {
     #             "result": "Failed to log into gitlab to create merge request" 
     #         }
-            
+
+    # Create Merge Request
+    if hostname == "gitlab.com":
+        print(f"---> Create Merge Request for branch {branch} ")
+        gl = gitlab.Gitlab(private_token=token)
+        project = gl.projects.get()
+        mTitle = f'Merging new Music into branch {branch}'
+        mDescription = f'Adding Music into master branch from {branch}'
+        mr = project.mergerequests.create({'source_branch': branch, 'target': 'master', 'title': mTitle, 'description': mDescription})
+
+
     print("---> Finished")
     return {
         "result": f'Successfully downloaded Music',

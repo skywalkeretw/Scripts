@@ -27,4 +27,5 @@ RUN mkdir /root/.ssh
 # Install gitpython tool
 RUN pip install \
     --upgrade pip \
-    gitpython
+    gitpython \
+    python-gitlab
