@@ -17,7 +17,9 @@ RUN curl -o /usr/local/bin/music https://raw.githubusercontent.com/skywalkeretw/
     chmod +x /usr/local/bin/music
 
 # Install gitlab CLI
-RUN curl -sL https://j.mp/glab-cli | sh
+RUN curl -sL https://j.mp/glab-cli | sh 
+
+ENV PATH="${PATH}:/usr/bin"
 
 # Create ssh folder 
 RUN mkdir /root/.ssh
