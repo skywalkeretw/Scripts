@@ -97,7 +97,7 @@ def main(params):
     failedStr = ""
     successfulDownloads = 0
     for m in music:
-        if not all (k in params for k in ("song", "artist", "album", "url")): 
+        if not all (k in m for k in ("song", "artist", "album", "url")): 
             print("---> Params are missing")
 
         song = m["song"]           # Song Name
@@ -136,40 +136,33 @@ def main(params):
     repo.git.push('origin', branch)
 
     # Create Merge Request
-    # if hostname == "gitlab.com":
-    #     print(f"---> Login to {hostname} cli")
-    #     loginStr = f"glab auth login -t {token} -h {hostname}"
-    #     glabCode = os.system(loginStr)
-    #     print(f"---> Gitlab login code: {glabCode}")
-
-    #     if glabCode == 0: 
-    #         print(f"---> Create Merge Request for {hostname}")
-    #         mTitle = f'Merging new Music into branch {branch}'
-    #         mDescription = f'Adding Music into master branch from {branch}'
-    #         mergeRequestStr = f"glab mr create --title \"{mTitle}\" --description \"{mDescription}\" | grep {hostname}"
-    #         mergeOut = os.popen(mergeRequestStr).read()
-    #         print(f"---> Merge Request URL: {mergeOut}")
-
-    #     else:
-    #         print(f"---> Failed to login to {hostname}")
-    #         return {
-    #             "result": "Failed to log into gitlab to create merge request" 
-    #         }
-
-    # Create Merge Request
     if hostname == "gitlab.com":
-        print(f"---> Create Merge Request for branch {branch} ")
+        # Login to Gitlab
+        print(f"---> Login to {hostname}")
         gl = gitlab.Gitlab(private_token=token)
-        project = gl.projects.get()
+        print(f"---> Get Project ID")
+        projects = gl.projects.list(search=repoURL.split("/",1)[1].split(".",1)[0])
+        
+        # Connect to Gitlab Project
+        projectid = projects[len(projects)-1].id
+        print(f"---> Connect to Project: {projectid}")
+        project = gl.projects.get(projectid)
+        
+        # Create Merge Request
         mTitle = f'Merging new Music into branch {branch}'
         mDescription = f'Adding Music into master branch from {branch}'
-        mr = project.mergerequests.create({'source_branch': branch, 'target': 'master', 'title': mTitle, 'description': mDescription})
-
+        print(f"---> Create Merge Request for Project: {projectid} on Branch: {branch} ")
+        mr = project.mergerequests.create({'source_branch': branch, 'target_branch': 'master', 'title': mTitle, 'description': mDescription})
+        print(f"---> Merge URL: {mr.web_url}")
+        return {
+            "result": f'Successfully downloaded Music and Created Pull request',
+            "url": mr.web_url,
+            "branch": branch
+        }
 
     print("---> Finished")
     return {
         "result": f'Successfully downloaded Music',
         "failed": failedStr,
-        # "url": mergeOut.replace("\n", ""),
         "branch": branch
     }
