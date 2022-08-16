@@ -1,3 +1,4 @@
+from heapq import merge
 import git
 import gitlab
 import os, sys, stat
@@ -43,6 +44,12 @@ def main(params):
         return {
             "result": f'Params are missing',
         }
+
+    # Optional Parma to auto merge the merge request
+    if 'merge' in params:
+        merge = params["merge"]
+    else:
+        merge = False
 
     # setup SSH Connection to git 
     print("---> Setting Up Connection to git")
@@ -154,6 +161,17 @@ def main(params):
         print(f"---> Create Merge Request for Project: {projectid} on Branch: {branch} ")
         mr = project.mergerequests.create({'source_branch': branch, 'target_branch': 'master', 'title': mTitle, 'description': mDescription})
         print(f"---> Merge URL: {mr.web_url}")
+
+        # If params is set
+        if merge != False or merge != "false":
+            print("---> Merge Merge request automaticly")
+            mr.merge()
+            return{
+                "result": f'Successfully downloaded Music and merged Pull request',
+                "branch": branch
+            }
+
+        print("---> Successfully downloaded Music and Created Pull request")
         return {
             "result": f'Successfully downloaded Music and Created Pull request',
             "url": mr.web_url,
