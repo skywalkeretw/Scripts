@@ -1,4 +1,3 @@
-from heapq import merge
 import git
 import gitlab
 import os, sys, stat
@@ -22,6 +21,13 @@ import shutil
 #     }]
 # }
 
+r = {
+    "message": "Action Failed!",
+    "error": True,
+    "url": "",
+    "branch": ""
+}
+
 def main(params):
     print("---> Start")
     # Check Keys
@@ -35,15 +41,13 @@ def main(params):
         token = params["token"]         # Gitlab Token
         music = params["music"]         # Array of Music
         if not isinstance(music, list):
-            print("---> Music is not a list")
-            return {
-                "result": f'Music is not a list'
-            }
+            r["message"] = "Music is not a list and cant be processed"
+            print(f"---> {r['message']}")
+            return r
     else:
-        print("---> Params are missing")
-        return {
-            "result": f'Params are missing',
-        }
+        r["message"] = "Required Parameters are missing!"
+        print(f"---> {r['message']}")
+        return r
 
     # Optional Parma to auto merge the merge request
     if 'merge' in params:
@@ -71,10 +75,9 @@ def main(params):
     if sshcode == 0:
         print("---> Connection to gitlab confirmed")
     else:
-        print("---> failed to Connect to Gitlab")
-        return {
-            "error": "failed to connect to Gitlab"
-        }
+        r["message"] = f"Failed to Connect to {hostname}"
+        print(f"---> {r['message']}")
+        return r
 
     # Clone the Repository
     musicdir = '/playlist'
@@ -95,18 +98,22 @@ def main(params):
 
     # Create and Checkout new Branch
     branch = uuid.uuid4().hex
+    r["branch"] = branch
     print(f"---> Create and Checkout Branch: {branch}")
     repo.git.branch(branch)
     repo.git.checkout(branch)
 
     # Download all the songs in the list
     commitStr = "Adding Music to playlist:"
-    failedStr = ""
+    failedStr = "Failed to add Songs:\n"
     successfulDownloads = 0
     for m in music:
         if not all (k in m for k in ("song", "artist", "album", "url")): 
-            print("---> Params are missing")
+            r["message"] = "Required Music Parameters are missing!"
+            print(f"---> {r['message']}")
+            return r
 
+        print("---> Setting Music Variables")
         song = m["song"]           # Song Name
         artist = m["artist"]       # Artist Name
         album = m["album"]         # Album Name
@@ -123,15 +130,15 @@ def main(params):
             commitStr += f'\nSong: {song}\nArtist: {artist}\nAlbum: {album}\nURL: {url}'
         else:
             print(f"---> Failed to Download and Tag {song} from {url}")
-            failedStr += f'Failed to download {song} - {url}'
+            failedStr += f'{song}-{artist} = {url} |\n'
 
     # If all Downloads fail end Function
     if successfulDownloads == 0:
         print("---> Failed to Download all Songs")
-        return {
-            "result": 'Failed to Download all Songs',
-            "failed": failedStr,
-        }
+        r["message"] = f"{failedStr}"
+        print(f"---> {r['message']}")
+        return r
+
 
     # Add and Commit changes
     print("---> Add and Commit changes")
@@ -162,25 +169,23 @@ def main(params):
         mr = project.mergerequests.create({'source_branch': branch, 'target_branch': 'master', 'title': mTitle, 'description': mDescription})
         print(f"---> Merge URL: {mr.web_url}")
 
-        # If params is set
+        # If params is set Merge Pull/Merge request
         if merge != False or merge != "false":
-            print("---> Merge Merge request automaticly")
             mr.merge()
-            return{
-                "result": f'Successfully downloaded Music and merged Pull request',
-                "branch": branch
-            }
+            r["message"] = "Successfully downloaded Music, Created Pull/Merge request and merge it automatically"
+            r["error"] = False
+            print(f"---> {r['message']}")
+            return r
 
-        print("---> Successfully downloaded Music and Created Pull request")
-        return {
-            "result": f'Successfully downloaded Music and Created Pull request',
-            "url": mr.web_url,
-            "branch": branch
-        }
+        # Downloaded Music and Create Pull/Merge request
+        r["message"] = "Successfully downloaded Music and Created Pull/Merge request"
+        r["error"] = False
+        r["url"] = mr.web_url
+        print(f"---> {r['message']}")
+        return r
 
-    print("---> Finished")
-    return {
-        "result": f'Successfully downloaded Music',
-        "failed": failedStr,
-        "branch": branch
-    }
+    # Downloaded music without creating a Pull/Merge request
+    r["message"] = "Successfully downloaded Music"
+    r["error"] = False
+    print(f"---> {r['message']}")
+    return r
