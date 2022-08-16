@@ -21,6 +21,7 @@ import shutil
 #     }]
 # }
 
+# Return Structure Data
 r = {
     "message": "Action Failed!",
     "error": True,
