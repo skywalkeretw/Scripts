@@ -2,6 +2,8 @@ packages:
   default:
     actions:
       gitMusic:
+        version: 2.0
+        description: Web action to download and add music to git repo by creating a pull/merge request
         function: __main__.py
         docker: lukeroy/music-fn:1.0.2
         web: true
