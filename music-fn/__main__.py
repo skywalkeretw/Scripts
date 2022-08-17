@@ -56,10 +56,15 @@ def mergeRequest(hostname, token, repoURL, branch, merge):
     if (merge != False or merge != "false") :
         try:
             mr.merge()
-            r["message"] = "Successfully downloaded Music, Created Pull/Merge request and merge it automatically"
+            r["message"] = "Successfully downloaded Music, Created Pull/Merge request and merge it automatically 1"
             r["error"] = False
         except:
-            r["message"] = "Failed to Merge"
+            try:  
+                project.mergerequests.merge(mr.id)
+                r["message"] = "Successfully downloaded Music, Created Pull/Merge request and merge it automatically 2"
+                r["error"] = False
+            except:
+                r["message"] = "Failed to Merge"
 
         print(f"---> {r['message']}")
         return r
