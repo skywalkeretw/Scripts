@@ -30,7 +30,7 @@ def setupSSH(key, hostname):
     return False
 
 # gitlab function to create Merge Request
-def gitlab(hostname, token, repoURL, branch, merge):
+def mergeRequest(hostname, token, repoURL, branch, merge):
     # Login to Gitlab
     print(f"---> Login to {hostname}")
     gl = gitlab.Gitlab(private_token=token)
@@ -196,7 +196,7 @@ def main(params):
 
     # Create Merge Request
     if hostname == "gitlab.com":
-        return gitlab(hostname, token, repoURL, branch, merge)
+        return mergeRequest(hostname, token, repoURL, branch, merge)
 
     # Downloaded music without creating a Pull/Merge request
     r["message"] = "Successfully downloaded Music"
