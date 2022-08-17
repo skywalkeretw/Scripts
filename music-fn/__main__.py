@@ -1,3 +1,4 @@
+from ast import Try
 import git # https://gitpython.readthedocs.io/en/stable/
 import gitlab # https://python-gitlab.readthedocs.io/en/stable/index.html
 import os, sys, stat
@@ -48,19 +49,23 @@ def mergeRequest(hostname, token, repoURL, branch, merge):
     print(f"---> Create Merge Request for Project: {projectid} on Branch: {branch} ")
     mr = project.mergerequests.create({'source_branch': branch, 'target_branch': 'master', 'title': mTitle, 'description': mDescription})
     print(f"---> Merge URL: {mr.web_url}")
+    r["url"] = mr.web_url
 
-    # If params is set Merge Pull/Merge request
-    if merge != False or merge != "false":
-        mr.merge()
-        r["message"] = "Successfully downloaded Music, Created Pull/Merge request and merge it automatically"
-        r["error"] = False
+    # If params is set Merge Pull/Merge request :todo fix
+    if (merge != False or merge != "false") :
+        try:
+            mr.merge()
+            r["message"] = "Successfully downloaded Music, Created Pull/Merge request and merge it automatically"
+            r["error"] = False
+        except:
+            r["message"] = "Failed to Merge"
+
         print(f"---> {r['message']}")
         return r
 
     # Downloaded Music and Create Pull/Merge request
     r["message"] = "Successfully downloaded Music and Created Pull/Merge request"
     r["error"] = False
-    r["url"] = mr.web_url
     print(f"---> {r['message']}")
     return r
 
