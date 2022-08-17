@@ -48,6 +48,7 @@ def mergeRequest(hostname, token, repoURL, branch, merge):
     mDescription = f'Adding Music into master branch from {branch}'
     print(f"---> Create Merge Request for Project: {projectid} on Branch: {branch} ")
     mr = project.mergerequests.create({'source_branch': branch, 'target_branch': 'master', 'title': mTitle, 'description': mDescription})
+    print(f"---> Merge Request: {mr}")
     print(f"---> Merge URL: {mr.web_url}")
     r["url"] = mr.web_url
 
