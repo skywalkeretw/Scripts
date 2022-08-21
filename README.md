@@ -94,7 +94,7 @@ Decrypt File using Key and IV
 ./crypt.sh rsa d <private_key.pem> <file_to_decrypt>
 ```
 
-## [lenovo](Lenovo MIIX 320 10ICR Fixes)
+## [Lenovo MIIX 320 10ICR Fixes](lenovo)
 Selection of scripts to help setup Lenovo Miix 320 running Linux
 
 ## [ZSH Themes](ZSH_themes)
