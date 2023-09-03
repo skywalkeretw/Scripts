@@ -6,7 +6,7 @@ ALBUM=$3
 URL=$4
 FILENAME="${SONG} - ${ARTIST}"
 echo "----- Started Downloading: ${FILENAME} -----"
-youtube-dl \
+youtube-dlc \
     --extract-audio \
     --audio-format "mp3" \
     -o "${FILENAME}.%(ext)s" \
