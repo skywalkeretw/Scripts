@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dynamic POST Form</title>
+</head>
+<body>
+    <h1>POST Request Form</h1>
+    <form id="postForm" method="post" action="https://eu-de.functions.appdomain.cloud/api/v1/web/e7a16c99-643b-4105-996f-a45047bf8178/default/gitMusic.json">
+        <h2>Music Data:</h2>
+        <div id="musicFields"></div><br><br>
+        <button onclick="addMusic()">Add Song</button> <br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        var musicData = [];
+
+        function addMusic() {
+            musicData.push({
+                "song": "",
+                "artist": "",
+                "album": "",
+                "url": ""
+            });
+
+            createMusicFields();
+        }
+
+        function updateMusic(key, index) {
+            musicData[index][key] = document.getElementById(key+index).value
+        }
+
+        // Function to add input fields for each item in the "music" array
+        function createMusicFields() {
+            const musicFieldsContainer = document.getElementById("musicFields");
+            musicFieldsContainer.innerHTML = "";
+            musicData.forEach((musicItem, index) => {
+                const fieldset = document.createElement("fieldset");
+                fieldset.innerHTML = `<legend>Music ${index + 1}</legend>
+                    <label for="song${index}">Song:</label>
+                    <input required type="text" onchange="updateMusic('song', ${index})" id="song${index}" name="song${index}" value="${musicItem.song}"><br><br>
+
+                    <label for="artist${index}">Artist:</label>
+                    <input required type="text" onchange="updateMusic('artist', ${index})" id="artist${index}" name="artist${index}" value="${musicItem.artist}"><br><br>
+
+                    <label for="album${index}">Album:</label>
+                    <input required type="text" onchange="updateMusic('album', ${index})" id="album${index}" name="album${index}" value="${musicItem.album}"><br><br>
+
+                    <label for="url${index}">URL:</label>
+                    <input required type="text" onchange="updateMusic('url', ${index})" id="url${index}" name="url${index}" value="${musicItem.url}"><br><br>`;
+                musicFieldsContainer.appendChild(fieldset);
+            });
+        }
+
+        // Call the function to create music input fields when the page loads
+        createMusicFields();
+
+        document.getElementById("postForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            // const form = event.target;
+            // const formData = new FormData(form);
+            // const data = {};
+
+            // // Convert form data to JSON object
+            // formData.forEach(function (value, key) {
+            //     data[key] = value;
+            // });
+            // console.log(data)
+
+            // // Prepare the "music" array from input fields and update musicData
+            // const music = [];
+            // const numMusicFields = musicData.length;
+
+            // for (let i = 0; i < numMusicFields; i++) {
+            //     const songKey = `song${i}`;
+            //     const artistKey = `artist${i}`;
+            //     const albumKey = `album${i}`;
+            //     const urlKey = `url${i}`;
+
+            //     music.push({
+            //         "song": data[songKey],
+            //         "artist": data[artistKey],
+            //         "album": data[albumKey],
+            //         "url": data[urlKey]
+            //     });
+
+            //     // Update musicData with the new values
+            //     // musicData[i].song = data[songKey];
+            //     // musicData[i].artist = data[artistKey];
+            //     // musicData[i].album = data[albumKey];
+            //     // musicData[i].url = data[urlKey];
+            // }
+            body = {"merge": false}
+            body["music"] = musicData;
+
+            console.log(JSON.stringify(body))
+            // Perform the POST request
+            // fetch(form.action, {
+            //     method: "POST",
+            //     headers: {
+            //         "Accept": "application/json",
+            //         "Content-Type": "application/json",
+            //         "X-Require-Whisk-Auth": ""
+            //     },
+            //     body: JSON.stringify(data)
+            // })
+            // .then(response => response.json())
+            // .then(data => {
+            //     console.log("Response:", data);
+            //     // Handle the response as needed
+            // })
+            // .catch(error => {
+            //     console.error("Error:", error);
+            //     // Handle errors as needed
+            // });
+        });
+    </script>
+</body>
+</html>
