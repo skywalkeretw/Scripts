@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Team Answers Carousel</title>
+  <title>Cards Against Developers</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -97,77 +97,401 @@
 <div class="carousel-container" id="carousel-container">
   <div class="question" id="question"></div>
   <div class="team-container" id="team-container"></div>
-  <div class="carousel-buttons">
+  <div class="carousel-buttons" id="carousel-buttons">
     <button onclick="prevQuestion()">Previous</button>
     <button onclick="nextQuestion()">Next</button>
   </div>
 </div>
 
 <script>
-  const data = [];
+  const data = [
+  {
+    "question": "Software development is like ___.",
+    "Blue": {
+      "1": "Your option",
+      "2": "I tested It",
+      "3": "I destroyed the Internet",
+      "4": "Did you try turning it off and on again",
+      "Team": 1
+    },
+    "Orange": {
+      "1": "A short nap",
+      "2": "A missing semicolon",
+      "3": "A fridge filled with club mate",
+      "4": "45 minutes daily standup",
+      "Team": 2
+    },
+    "Yellow": {
+      "1": "AI-based sex toys",
+      "2": "AI Hackathon",
+      "3": "A/B testing",
+      "4": "A three-day build pipeline",
+      "Team": 1
+    },
+    "Green": {
+      "1": "Beer in the office",
+      "2": "Beer Pong as a team event",
+      "3": "Backdoor Traffic",
+      "4": "An oversized office chair",
+      "Team": 2
+    }
+  },
+  {
+    "question": "Our systems for ___ runs only on raspberry pies.",
+    "Blue": {
+      "1": "Compilation error",
+      "2": "Commenting it out",
+      "3": "Comic Con",
+      "4": "Cold leftover pizza from last week",
+      "Team": 1
+    },
+    "Orange": {
+      "1": "Code monkeys",
+      "2": "Church of the flying spaghetti monster",
+      "3": "Cat videos",
+      "4": "CORS Headers",
+      "Team": 1
+    },
+    "Yellow": {
+      "1": "Burger Tuesday",
+      "2": "Bruce Schneier",
+      "3": "Browsing StackOverflow for hours without actually looking for a solution",
+      "4": "Blinking ads",
+      "Team": 2
+    },
+    "Green": {
+      "1": "Black holes",
+      "2": "Bill Gates",
+      "3": "Big Data-driven business model",
+      "4": "Being oddly specific",
+      "Team": 2
+    }
+  },
+  {
+    "question": "I don’t need backups, I have ___.",
+    "Blue": {
+      "1": "Eject USB drives unsafely",
+      "2": "Displaying success messages in red color to scare the hell out of others",
+      "3": "Deleting one cell in Excel wrathing your whole data model",
+      "4": "Customer touchpoints",
+      "Team": 2
+    },
+    "Orange": {
+      "1": "Dry humping",
+      "2": "DevSecOps",
+      "3": "Day Drinking",
+      "4": "Cuddling with Ewoks",
+      "Team": 2
+    },
+    "Yellow": {
+      "1": "Donald Trump",
+      "2": "DevOps Engineers",
+      "3": "Darude Sandstorm",
+      "4": "Create a buffer overflow",
+      "Team": 1
+    },
+    "Green": {
+      "1": "Don't lick it",
+      "2": "Deodorant instead of showers",
+      "3": "Darknet Marketplace",
+      "4": "Copy & Pasting from StackOverflow",
+      "Team": 1
+    }
+  },
+  {
+    "question": "I switched to Linux because of ___.",
+    "Blue": {
+      "1": "Just a minor refactoring",
+      "2": "It's a feature",
+      "3": "It worked on staging",
+      "4": "It is always a good idea to change a running system",
+      "Team": 1
+    },
+    "Orange": {
+      "1": "Hoodies and Ski masks",
+      "2": "Having the last word",
+      "3": "Hacking Vibrators",
+      "4": "Hacker bootcamp",
+      "Team": 2
+    },
+    "Yellow": {
+      "1": "Going to prom naked",
+      "2": "Forget to lock my computer",
+      "3": "Fixing bugs during the penetration test",
+      "4": "Fast food, five times a week",
+      "Team": 2
+    },
+    "Green": {
+      "1": "Fair hostesses",
+      "2": "Explosive diarrhea",
+      "3": "End to end encryption with a non-revocable static key",
+      "4": "Elon Musk",
+      "Team": 1
+    }
+  },
+  {
+    "question": "My co-worker files a complaint because of ___.",
+    "Blue": {
+      "1": "Not wearing pants during video chats",
+      "2": "NAT allergy",
+      "3": "My love life",
+      "4": "Minecraft",
+      "Team": 2
+    },
+    "Orange": {
+      "1": "Microservice Architecture",
+      "2": "Marc Zuckerberg",
+      "3": "Male underboob sweat",
+      "4": "Making small changes in production",
+      "Team": 1
+    },
+    "Yellow": {
+      "1": "Magic Numbers",
+      "2": "Lucky13",
+      "3": "Looking like I care",
+      "4": "Living in my mother's basement",
+      "Team": 2
+    },
+    "Green": {
+      "1": "Legacy Code",
+      "2": "Leaving the backdoor open",
+      "3": "Layer 8 problem",
+      "4": "KISS",
+      "Team": 1
+    }
+  },
+  {
+    "question": "After ten years working as a developer, I am addicted to___.",
+    "Blue": {
+      "1": "Quadcopter with infrared camera",
+      "2": "Python",
+      "3": "Popping the stack",
+      "4": "Plumber's smile",
+      "Team": 1
+    },
+    "Orange": {
+      "1": "Plugging in a USB drive correctly the first time",
+      "2": "Please beautify",
+      "3": "Playing Mario Kart... in single-player mode",
+      "4": "Penetration without testing",
+      "Team": 2
+    },
+    "Yellow": {
+      "1": "Panda porn",
+      "2": "PHP",
+      "3": "Overspecified requirements",
+      "4": "Outsourcing to India",
+      "Team": 1
+    },
+    "Green": {
+      "1": "Opening an alpaca farm",
+      "2": "Old people smell",
+      "3": "Nyan Cat",
+      "4": "Null pointer exception",
+      "Team": 2
+    }
+  },
+  {
+    "question": "We use ___ for quality control.",
+    "Blue": {
+      "1": "Shared Memory",
+      "2": "Server farms",
+      "3": "Script Kiddy",
+      "4": "Scope Creep",
+      "Team": 2
+    },
+    "Orange": {
+      "1": "STDs",
+      "2": "Running a conference completely with volunteers",
+      "3": "Rooftop barbecue party",
+      "4": "Reviewing pull requests",
+      "Team": 2
+    },
+    "Yellow": {
+      "1": "Remote access",
+      "2": "Releasing too early",
+      "3": "Rebasing",
+      "4": "Reading the Youporn blog entries on technology for research purposes",
+      "Team": 1
+    },
+    "Green": {
+      "1": "Releasing features early",
+      "2": "Quoting the Big Bang Theory",
+      "3": "Quick search",
+      "4": "Quick fix",
+      "Team": 1
+    }
+  },
+  {
+    "question": "This year's marketing motto is ___ .",
+    "Blue": {
+      "1": "Too many hot girls",
+      "2": "Tiny student dorms",
+      "3": "That can't be too complicated",
+      "4": "Testing in production",
+      "Team": 2
+    },
+    "Orange": {
+      "1": "Testing early",
+      "2": "Terraforming",
+      "3": "Ten-layered if statements",
+      "4": "Technical Difficulties",
+      "Team": 1
+    },
+    "Yellow": {
+      "1": "Swiping left and right",
+      "2": "Swinging my lightsaber",
+      "3": "Sun rays",
+      "4": "Stormtroopers for quality control",
+      "Team": 1
+    },
+    "Green": {
+      "1": "Steve Jobs",
+      "2": "Something written in Fortran",
+      "3": "Software rollback",
+      "4": "Smiling a little bit too much",
+      "Team": 2
+    }
+  },
+  {
+    "question": "On my GitHub profile you will find ___ .",
+    "Blue": {
+      "1": "Using blockchain in every pitch",
+      "2": "Using a light theme for the terminal",
+      "3": "Using XML instead of JSON",
+      "4": "Using Tabs instead of Spaces",
+      "Team": 1
+    },
+    "Orange": {
+      "1": "Useless meeting",
+      "2": "Unicorns",
+      "3": "Unexpected side effects",
+      "4": "Tripping the wire",
+      "Team": 1
+    },
+    "Yellow": {
+      "1": "Touching myself",
+      "2": "Touching my joystick",
+      "3": "Touch control",
+      "4": "Tinder newsletter",
+      "Team": 2
+    },
+    "Green": {
+      "1": "The difference between machine learning and AI",
+      "2": "The dark side of the force",
+      "3": "The Linux Kernel",
+      "4": "The 16th internship in the 12th company",
+      "Team": 2
+    }
+  },
+  {
+    "question": "The customer requests ___ .",
+    "Blue": {
+      "1": "sudo",
+      "2": "rm -rf /",
+      "3": "IOS developers",
+      "4": "git --force push",
+      "Team": 2
+    },
+    "Orange": {
+      "1": "LATEX",
+      "2": "Writing code without my supervisor telling me what to do",
+      "3": "Winning because of psychological warfare",
+      "4": "Winking at old people",
+      "Team": 1
+    },
+    "Yellow": {
+      "1": "Whistling the Tetris theme song",
+      "2": "Watching Porn over the company VPN",
+      "3": "Vendor lock Stockholm syndrome",
+      "4": "Using open source software just because it's free",
+      "Team": 2
+    },
+    "Green": {
+      "1": "Using more than 10 programming languages because I can",
+      "2": "Using Kubernetes for my static website with 100 visitors per month",
+      "3": "Using HTML as a programming language",
+      "4": "Using Blockchain instead of a database",
+      "Team": 1
+    }
+  }
+];
 
   let currentIndex = 0;
 
-  function showQuestion(index) {
-  const currentData = data[index];
+  function showQuestion(index, color) {
+    const currentData = data[index];
 
-  if (currentData && currentData.question) {
-    const question = currentData.question;
-    const teams = { ...currentData };
-    delete teams.question;
-    document.getElementById('question').innerText = `${index + 1}: ${question}`;
+    if (currentData && currentData.question) {
+        const question = currentData.question;
+        const teams = { ...currentData };
+        delete teams.question;
+        document.getElementById('question').innerHTML = `<h2>${index + 1}: ${question}</h2>`;
 
-    const teamContainer = document.getElementById('team-container');
-    teamContainer.innerHTML = '';
+        const teamContainer = document.getElementById('team-container');
+        teamContainer.innerHTML = '';
 
-    Object.keys(teams).forEach(teamName => {
-      if (teamName !== "Team") {
-        const teamDiv = document.createElement('div');
-        teamDiv.classList.add('team');
+        Object.keys(teams).forEach(teamName => {
+            if (teamName !== "Team" && (color === null || color === teamName.toLowerCase())) {
+                const teamDiv = document.createElement('div');
+                teamDiv.classList.add('team');
 
-        if (teams[teamName].Team === 1) {
-          teamDiv.classList.add('team1');
-        }
+                if (teams[teamName].Team === 1) {
+                    teamDiv.classList.add('team1');
+                }
 
-        const teamHeader = document.createElement('h3');
-        teamHeader.innerText = teamName;
-        teamDiv.appendChild(teamHeader);
+                const teamHeader = document.createElement('h3');
+                teamHeader.innerText = teamName;
+                teamDiv.appendChild(teamHeader);
 
-        const teamOptions = teams[teamName];
-        const teamOptionsDiv = document.createElement('div');
-        teamOptionsDiv.classList.add('team-options');
+                const teamOptions = teams[teamName];
+                const teamOptionsDiv = document.createElement('div');
+                teamOptionsDiv.classList.add('team-options');
 
-        Object.keys(teamOptions).forEach(optionNumber => {
-          if (optionNumber !== "Team") {
-            const optionDiv = document.createElement('div');
-            optionDiv.classList.add('team-option', `team-option-${teamName.toLowerCase()}`);
-            optionDiv.innerText = `${optionNumber}: ${teamOptions[optionNumber]}`;
-            teamOptionsDiv.appendChild(optionDiv);
-          }
+                Object.keys(teamOptions).forEach(optionNumber => {
+                    if (optionNumber !== "Team") {
+                        const optionDiv = document.createElement('div');
+                        optionDiv.classList.add('team-option', `team-option-${teamName.toLowerCase()}`);
+                        optionDiv.innerText = `${optionNumber}: ${teamOptions[optionNumber]}`;
+                        teamOptionsDiv.appendChild(optionDiv);
+                    }
+                });
+
+                teamDiv.appendChild(teamOptionsDiv);
+                teamContainer.appendChild(teamDiv);
+            }
         });
-
-        teamDiv.appendChild(teamOptionsDiv);
-        teamContainer.appendChild(teamDiv);
-      }
-    });
-  }
+    }
 }
+
 
 
   function nextQuestion() {
     currentIndex = (currentIndex + 1) % data.length;
-    showQuestion(currentIndex);
+    showQuestion(currentIndex, null);
   }
 
   function prevQuestion() {
     currentIndex = (currentIndex - 1 + data.length) % data.length;
-    showQuestion(currentIndex);
+    showQuestion(currentIndex, null);
   }
 
   // Initial display
-  console.log("data len: " + data.length)
-  console.log("currentIndex: " + currentIndex)
-  showQuestion(currentIndex);
+  // Parse URL parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const indexParam = urlParams.get('index');
+  const colorParam = urlParams.get('colour');
+
+  if (indexParam && colorParam) {
+    document.getElementById('carousel-buttons').style.display = 'none';
+
+    currentIndex = parseInt(indexParam, 10) - 1;
+    console.log("indexParam: " + indexParam + " colour: " + colorParam)
+    showQuestion(currentIndex, colorParam);
+  
+  } else {
+    showQuestion(currentIndex, null);
+  }
 </script>
 
 </body>
