@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team Answers Carousel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f2f2f2;
+    }
+
+    .carousel-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .question {
+      font-size: 1.5em;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .team-container {
+      display: flex;
+      justify-content: space-around;
+      width: 80%;
+    }
+
+    .team {
+      flex: 1;
+      text-align: center;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      margin: 0 10px;
+    }
+
+    .team h3 {
+      margin-bottom: 10px;
+    }
+
+    .team-options {
+      margin-top: 10px;
+    }
+
+    .team-option {
+      margin: 5px;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .team-option-blue {
+      background-color: #3498db;
+      color: #fff;
+    }
+
+    .team-option-orange {
+      background-color: #e67e22;
+      color: #fff;
+    }
+
+    .team-option-yellow {
+      background-color: #f1c40f;
+      color: #fff;
+    }
+
+    .team-option-green {
+      background-color: #2ecc71;
+      color: #fff;
+    }
+
+    .team1 {
+      background-color: #ccc;
+    }
+
+    .carousel-buttons {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .carousel-buttons button {
+      margin: 0 5px;
+      padding: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="carousel-container" id="carousel-container">
+  <div class="question" id="question"></div>
+  <div class="team-container" id="team-container"></div>
+  <div class="carousel-buttons">
+    <button onclick="prevQuestion()">Previous</button>
+    <button onclick="nextQuestion()">Next</button>
+  </div>
+</div>
+
+<script>
+  const data = [];
+
+  let currentIndex = 0;
+
+  function showQuestion(index) {
+  const currentData = data[index];
+
+  if (currentData && currentData.question) {
+    const question = currentData.question;
+    const teams = { ...currentData };
+    delete teams.question;
+    document.getElementById('question').innerText = `${index + 1}: ${question}`;
+
+    const teamContainer = document.getElementById('team-container');
+    teamContainer.innerHTML = '';
+
+    Object.keys(teams).forEach(teamName => {
+      if (teamName !== "Team") {
+        const teamDiv = document.createElement('div');
+        teamDiv.classList.add('team');
+
+        if (teams[teamName].Team === 1) {
+          teamDiv.classList.add('team1');
+        }
+
+        const teamHeader = document.createElement('h3');
+        teamHeader.innerText = teamName;
+        teamDiv.appendChild(teamHeader);
+
+        const teamOptions = teams[teamName];
+        const teamOptionsDiv = document.createElement('div');
+        teamOptionsDiv.classList.add('team-options');
+
+        Object.keys(teamOptions).forEach(optionNumber => {
+          if (optionNumber !== "Team") {
+            const optionDiv = document.createElement('div');
+            optionDiv.classList.add('team-option', `team-option-${teamName.toLowerCase()}`);
+            optionDiv.innerText = `${optionNumber}: ${teamOptions[optionNumber]}`;
+            teamOptionsDiv.appendChild(optionDiv);
+          }
+        });
+
+        teamDiv.appendChild(teamOptionsDiv);
+        teamContainer.appendChild(teamDiv);
+      }
+    });
+  }
+}
+
+
+  function nextQuestion() {
+    currentIndex = (currentIndex + 1) % data.length;
+    showQuestion(currentIndex);
+  }
+
+  function prevQuestion() {
+    currentIndex = (currentIndex - 1 + data.length) % data.length;
+    showQuestion(currentIndex);
+  }
+
+  // Initial display
+  console.log("data len: " + data.length)
+  console.log("currentIndex: " + currentIndex)
+  showQuestion(currentIndex);
+</script>
+
+</body>
+</html>
