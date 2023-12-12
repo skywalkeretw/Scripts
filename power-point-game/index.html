@@ -444,6 +444,13 @@
                 teamHeader.innerText = teamName;
                 teamDiv.appendChild(teamHeader);
 
+                if (color === null) {
+                    const urlInfo = document.createElement('code');
+                    urlInfo.innerText = `?index=${index + 1}&color=${teamName.toLowerCase()}`;
+                    teamDiv.appendChild(urlInfo);
+                }
+
+
                 const teamOptions = teams[teamName];
                 const teamOptionsDiv = document.createElement('div');
                 teamOptionsDiv.classList.add('team-options');
@@ -479,19 +486,22 @@
   // Initial display
   // Parse URL parameters
   const urlParams = new URLSearchParams(window.location.search);
-  const indexParam = urlParams.get('index');
-  const colorParam = urlParams.get('colour');
+    const indexParam = urlParams.get('index');
+    const colorParam = urlParams.get('color');
 
-  if (indexParam && colorParam) {
-    document.getElementById('carousel-buttons').style.display = 'none';
+    if (indexParam && colorParam) {
+        document.getElementById('carousel-buttons').style.display = 'none';
 
-    currentIndex = parseInt(indexParam, 10) - 1;
-    console.log("indexParam: " + indexParam + " colour: " + colorParam)
-    showQuestion(currentIndex, colorParam);
-  
-  } else {
-    showQuestion(currentIndex, null);
-  }
+        currentIndex = parseInt(indexParam, 10) - 1;
+        console.log("indexParam: " + indexParam + " color: " + colorParam)
+        showQuestion(currentIndex, colorParam);
+
+    } else if (!indexParam && !colorParam) {
+    // This block will be executed if there are no URL parameters specified
+        showQuestion(currentIndex, null);
+    } else {
+        document.getElementById('carousel-buttons').style.display = 'none';
+    }
 </script>
 
 </body>
