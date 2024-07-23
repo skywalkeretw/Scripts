@@ -3,8 +3,9 @@ import zipfile
 import shutil
 from datetime import datetime
 import platform
+import json
 
-def get_external_drive_path():
+def get_external_drive_path(backup_drive):
     """
     Detects the path of the external hard drive.
 
@@ -16,7 +17,8 @@ def get_external_drive_path():
         drives = win32api.GetLogicalDriveStrings().split('\000')[:-1]
         for drive in drives:
             try:
-                if win32api.GetVolumeInformation(drive)[0] == 'YourExternalDriveLabel':
+                # win32api.GetVolumeInformation(drive)[0] additional info about the drive
+                if drive == backup_drive:
                     return drive
             except Exception:
                 continue
@@ -24,7 +26,7 @@ def get_external_drive_path():
         import psutil
         partitions = psutil.disk_partitions()
         for partition in partitions:
-            if 'YourExternalDriveLabel' in partition.device:
+            if backup_drive in partition.device:
                 return partition.mountpoint
     
     return None
@@ -51,47 +53,58 @@ def create_zip(folder_paths, zip_name):
 
 def copy_to_external(zip_path, external_drive_path):
     """
-    Copies the zip file to a specified folder on an external hard drive.
+    Copies the zip file to a specified folder on an external hard drive and deletes the local zip file after copying.
 
     Parameters:
     zip_path (str): Path to the zip file.
     external_drive_path (str): Path to the destination folder on the external hard drive.
     """
-    if not os.path.exists(external_drive_path):
-        os.makedirs(external_drive_path)
-    shutil.copy(zip_path, external_drive_path)
-    print(f"Copied {zip_path} to {external_drive_path}")
+    try:
+        if not os.path.exists(external_drive_path):
+            os.makedirs(external_drive_path)
+        shutil.copy(zip_path, external_drive_path)
+        print(f"===> Copied {zip_path} to {external_drive_path}")
+        
+        # Delete the local zip file after successful copy
+        os.remove(zip_path)
+        print(f"===> Deleted local zip file: {zip_path}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
-def read_backup_dirs(file_path):
+
+def read_config(file_path):
     """
-    Reads the list of directories to back up from a file.
+    Reads a JSON configuration file and returns it as a dictionary.
 
-    Parameters:
-    file_path (str): Path to the file containing the list of directories.
-
-    Returns:
-    list: List of directory paths.
+    :param file_path: Path to the JSON file.
+    :return: Dictionary containing the configuration.
     """
     with open(file_path, 'r') as file:
-        dirs = file.read().splitlines()
-    return [d for d in dirs if d.strip()]
+        config = json.load(file)
+    return config
+
 
 def main():
     # Determine the directory of the current script
     script_dir = os.path.dirname(os.path.abspath(__file__))
+    print(f"===> Script Dir: {script_dir}")
 
     # Path to the backup-dirs.txt file
-    backup_dirs_file = os.path.join(script_dir, 'backup-dirs.txt')
+    backup_dirs_file = os.path.join(script_dir, 'backup-conf.json')
+    print(f"===> Absolute Backup config file: {backup_dirs_file}")
 
     # Read the list of directories to include in the zip file
-    folders_to_zip = read_backup_dirs(backup_dirs_file)
+    config_data = read_config(backup_dirs_file)
+    print(f"===> Backup Drive: {config_data['drive']}")
+    print(config_data['folders'])
 
     # Name of the zip file with a timestamp
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     zip_filename = f"backup_{timestamp}.zip"
+    print(f"===> Backup filename {zip_filename}")
 
     # Detect the external hard drive
-    external_drive = get_external_drive_path()
+    external_drive = get_external_drive_path(config_data["drive"])
     if not external_drive:
         print("External hard drive not found. Please ensure it is connected and try again.")
         return
@@ -100,11 +113,13 @@ def main():
     external_drive_folder = os.path.join(external_drive, 'backup')
 
     # Create the zip file
-    zip_file_path = create_zip(folders_to_zip, zip_filename)
-    print(f"Created zip file: {zip_file_path}")
+    zip_file_path = create_zip(config_data['folders'], zip_filename)
+    print(f"===> Created zip file: {zip_file_path}")
 
     # Copy the zip file to the external hard drive
     copy_to_external(zip_file_path, external_drive_folder)
+    print(f"===> Backup {zip_file_path} saved to Harddrive {external_drive}")
+
 
 if __name__ == "__main__":
     main()
