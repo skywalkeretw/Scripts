@@ -1,6 +1,0 @@
-C:\path\to\my-photos
-C:\path\to\my-docs
-C:\path\to\my-games
-/path/to/pics
-/path/to/docs
-/path/to/code

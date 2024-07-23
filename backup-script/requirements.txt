@@ -1,2 +1,5 @@
 psutil
 pywin32
+json
+zipfile
+tkinter
