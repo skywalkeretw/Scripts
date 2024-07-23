@@ -1,5 +1,6 @@
 {
     "drive": "H:\\",
+    "backup-folder": "backup\\det",
     "folders": [
         "C:\\test-dir", 
         "C:\\newdir"

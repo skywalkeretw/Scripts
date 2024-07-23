@@ -4,6 +4,9 @@ import shutil
 from datetime import datetime
 import platform
 import json
+import tkinter as tk
+from tkinter import messagebox
+
 
 def get_external_drive_path(backup_drive):
     """
@@ -68,8 +71,12 @@ def copy_to_external(zip_path, external_drive_path):
         # Delete the local zip file after successful copy
         os.remove(zip_path)
         print(f"===> Deleted local zip file: {zip_path}")
+        return os.path.join(external_drive_path, os.path.basename(zip_path))
+
     except Exception as e:
         print(f"An error occurred: {e}")
+    
+    return ""
 
 
 def read_config(file_path):
@@ -84,6 +91,15 @@ def read_config(file_path):
     return config
 
 
+def show_completion_alert(external_file_path):
+    """
+    Displays a completion alert using tkinter.
+    """
+    root = tk.Tk()
+    root.withdraw()
+    messagebox.showinfo("Completion Alert", f"Backup {external_file_path} saved successfully!")
+    root.destroy()
+
 def main():
     # Determine the directory of the current script
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -96,7 +112,7 @@ def main():
     # Read the list of directories to include in the zip file
     config_data = read_config(backup_dirs_file)
     print(f"===> Backup Drive: {config_data['drive']}")
-    print(config_data['folders'])
+    print(f"===> Folders: {", ".join(config_data['folders'])}")
 
     # Name of the zip file with a timestamp
     timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
@@ -110,15 +126,22 @@ def main():
         return
 
     # Path to the backup folder on the external hard drive
-    external_drive_folder = os.path.join(external_drive, 'backup')
+    external_drive_folder = os.path.join(external_drive, config_data["backup-folder"])
+    if not os.path.exists(external_drive_folder):
+        # Create all missing folders
+        os.makedirs(external_drive_folder)
+        print(f"===> Created the folder: {external_drive_folder}")
+    else:
+        print(f"===> Saving Backup to: {external_drive_folder}")
 
     # Create the zip file
     zip_file_path = create_zip(config_data['folders'], zip_filename)
     print(f"===> Created zip file: {zip_file_path}")
 
     # Copy the zip file to the external hard drive
-    copy_to_external(zip_file_path, external_drive_folder)
+    external_file_path = copy_to_external(zip_file_path, external_drive_folder)
     print(f"===> Backup {zip_file_path} saved to Harddrive {external_drive}")
+    show_completion_alert(external_file_path)
 
 
 if __name__ == "__main__":
