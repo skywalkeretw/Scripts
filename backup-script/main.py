@@ -5,7 +5,90 @@ from datetime import datetime
 import platform
 import json
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import filedialog, messagebox
+import string
+import time
+
+class FolderSelectorApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Folder Selector Form")
+        
+        self.config_data = {
+            "drive": "",
+            "backup-folder": "",
+            "folders": []
+        }
+
+        self.drive_letter_var = tk.StringVar()
+        self.base_folder_var = tk.StringVar()
+        self.folder_vars = []
+
+        self.create_widgets()
+
+    def create_widgets(self):
+        # Drive Letter Selection
+        tk.Label(self.root, text="Select Drive Letter:").grid(row=0, column=0, padx=10, pady=5)
+        drive_letters = self.get_available_drive_letters()
+        self.drive_letter_menu = tk.OptionMenu(self.root, self.drive_letter_var, *drive_letters)
+        self.drive_letter_menu.grid(row=0, column=1, padx=10, pady=5)
+
+        # Base Folder Selection
+        tk.Label(self.root, text="Select Folder:").grid(row=1, column=0, padx=10, pady=5)
+        tk.Entry(self.root, textvariable=self.base_folder_var).grid(row=1, column=1, padx=10, pady=5)
+        tk.Button(self.root, text="Browse", command=self.browse_base_folder).grid(row=1, column=2, padx=10, pady=5)
+
+        # Additional Folder Inputs
+        self.folder_inputs_frame = tk.Frame(self.root)
+        self.folder_inputs_frame.grid(row=2, column=0, columnspan=3, padx=10, pady=5)
+
+        self.add_folder_input_button = tk.Button(self.root, text="+", command=self.add_folder_input)
+        self.add_folder_input_button.grid(row=3, column=1, pady=5)
+
+        # Submit Button
+        self.submit_button = tk.Button(self.root, text="Submit", command=self.submit_form)
+        self.submit_button.grid(row=4, column=0, columnspan=3, pady=10)
+
+    def get_available_drive_letters(self):
+        drive_letters = []
+        for letter in string.ascii_uppercase:
+            drive_path = f"{letter}:\\"
+            if os.path.exists(drive_path):
+                drive_letters.append(letter)
+        return drive_letters
+
+    def browse_base_folder(self):
+        drive_letter = self.drive_letter_var.get()
+        if drive_letter:
+            base_folder_selected = filedialog.askdirectory(initialdir=f"{drive_letter}:\\")
+            if base_folder_selected:
+                self.base_folder_var.set(base_folder_selected)
+
+    def add_folder_input(self):
+        new_folder_var = tk.StringVar()
+        self.folder_vars.append(new_folder_var)
+        row = len(self.folder_vars) - 1
+        tk.Entry(self.folder_inputs_frame, textvariable=new_folder_var).grid(row=row, column=0, padx=10, pady=5)
+        tk.Button(self.folder_inputs_frame, text="Browse", command=lambda: self.browse_folder_input(new_folder_var)).grid(row=row, column=1, padx=10, pady=5)
+
+    def browse_folder_input(self, folder_var):
+        folder_selected = filedialog.askdirectory()
+        if folder_selected:
+            folder_var.set(folder_selected)
+
+    def submit_form(self):
+        drive_letter = self.drive_letter_var.get()
+        base_folder = self.base_folder_var.get()
+        base_folder_without_drive = base_folder[len(drive_letter)+2:] if drive_letter and base_folder else ""
+        
+        self.config_data["drive"] = f"{drive_letter}:\\"
+        self.config_data["backup-folder"] = base_folder_without_drive.replace('/', '\\')
+        self.config_data["folders"] = [folder_var.get().replace('/', '\\') for folder_var in self.folder_vars]
+
+        self.root.destroy()
+
+    def get_config(self):
+        return self.config_data
 
 
 def get_external_drive_path(backup_drive):
@@ -91,6 +174,12 @@ def read_config(file_path):
     return config
 
 
+def setup_config_file():
+    root = tk.Tk()
+    app = FolderSelectorApp(root)
+    root.mainloop()
+    return app.get_config()
+
 def show_completion_alert(external_file_path):
     """
     Displays a completion alert using tkinter.
@@ -107,6 +196,18 @@ def main():
 
     # Path to the backup-dirs.txt file
     backup_dirs_file = os.path.join(script_dir, 'backup-conf.json')
+    if not os.path.isfile(backup_dirs_file):
+        config_data = setup_config_file()
+
+        print(config_data)
+        print(backup_dirs_file)
+        time.sleep(5)
+
+        # Write initial data to the file
+        with open(backup_dirs_file, 'w') as json_file:
+
+            json.dump(config_data, json_file, indent=4)
+        print(f"===> Created new config JSON file: {backup_dirs_file}")
     print(f"===> Absolute Backup config file: {backup_dirs_file}")
 
     # Read the list of directories to include in the zip file
