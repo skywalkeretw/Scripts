@@ -1,5 +1,3 @@
 psutil
-pywin32
-json
-zipfile
+#pywin32
 tkinter
