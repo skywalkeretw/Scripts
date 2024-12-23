@@ -10,7 +10,8 @@ RUN apt update  \
 # Install Youtube-dl
 #RUN curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-dl \
 #    && chmod +x /usr/local/bin/youtube-dl
-RUN pip3 install youtube-dlc
+RUN curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/youtube-dlp \
+    && chmod +x /usr/local/bin/youtube-dlp
 
 # Install Downloader and Converter Script
 RUN curl -o /usr/local/bin/music https://raw.githubusercontent.com/skywalkeretw/Scripts/master/music/download.sh && \
