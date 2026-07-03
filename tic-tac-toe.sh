@@ -4,6 +4,7 @@
 
 turn="X"
 fin=0
+moves=0
 
 reset () {
 a="a"
@@ -15,6 +16,7 @@ f="f"
 g="g"
 h="h"
 i="i"
+moves=0
 }
 
 printBoard() {
@@ -94,6 +96,7 @@ do
             continue
         else
             a="$turn"
+            ((moves++))
         fi
         ;;
 
@@ -102,6 +105,7 @@ do
             continue
         else
             b="$turn"
+            ((moves++))
         fi
         ;;
 
@@ -110,6 +114,7 @@ do
             continue
         else
             c="$turn"
+            ((moves++))
         fi
         ;;
 
@@ -118,6 +123,7 @@ do
             continue
         else
             d="$turn"
+            ((moves++))
         fi
         ;;
 
@@ -126,6 +132,7 @@ do
             continue
         else
             e="$turn"
+            ((moves++))
         fi
         ;;
 
@@ -134,6 +141,7 @@ do
             continue
         else
             f="$turn"
+            ((moves++))
         fi
         ;;
 
@@ -142,6 +150,7 @@ do
             continue
         else
             g="$turn"
+            ((moves++))
         fi
         ;;
 
@@ -150,6 +159,7 @@ do
             continue
         else
             h="$turn"
+            ((moves++))
         fi
         ;;
 
@@ -158,14 +168,29 @@ do
             continue
         else
             i="$turn"
+            ((moves++))
         fi
         ;;
     esac
 
     checkWinner
     if [[ $fin == 1 ]]; then 
-        read -rsn1 -p "Do you want to quit ('y')" input 
+        read -rsn1 -p "Press 'y' to quit, any other key to play again: " input 
         if [[ $input == "y" ]]; then 
+            exit 0
+        else
+            reset
+            fin=0
+            continue
+        fi
+    fi
+    
+    # Check for draw
+    if [[ $fin == 0 && $moves == 9 ]]; then
+        printBoard
+        echo "It's a draw!"
+        read -rsn1 -p "Press 'y' to quit, any other key to play again: " input
+        if [[ $input == "y" ]]; then
             exit 0
         else
             reset

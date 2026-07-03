@@ -12,8 +12,7 @@
  import (
 	 "encoding/json"
 	 "fmt"
-	 "io/ioutil"
-	 "log"
+	 "io"
 	 "net/http"
  )
  
@@ -29,25 +28,26 @@
  
 	 resp, err := http.Get("https://api.chucknorris.io/jokes/random")
 	 if err != nil {
-		 log.Fatalln(err)
+		 return map[string]interface{}{"error": err.Error()}
 	 }
+	 defer resp.Body.Close()
  
-	 body, err := ioutil.ReadAll(resp.Body)
+	 body, err := io.ReadAll(resp.Body)
 	 if err != nil {
-		 log.Fatalln(err)
+		 return map[string]interface{}{"error": err.Error()}
 	 }
  
 	 var joke Joke
  
 	 err = json.Unmarshal(body, &joke)
 	 if err != nil {
-		 log.Println(err)
+		 return map[string]interface{}{"error": "failed to parse joke: " + err.Error()}
 	 }
-	 fmt.Println(joke)
+	 
 	 msg := make(map[string]interface{})
 	 msg["body"] = joke.Value
 	 // can optionally log to stdout (or stderr)
-	 fmt.Println("hello Go action")
+	 fmt.Println("Chuck Norris joke retrieved successfully")
 	 // return the output JSON
 	 return msg
- } 
+ }

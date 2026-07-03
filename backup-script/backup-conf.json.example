@@ -1,0 +1,8 @@
+{
+    "drive": "REPLACE_WITH_DRIVE_LETTER:\\",
+    "backup-folder": "backup\\my-backup",
+    "folders": [
+        "C:\\path\\to\\folder1",
+        "/path/to/folder2"
+    ]
+}

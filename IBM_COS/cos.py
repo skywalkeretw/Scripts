@@ -2,10 +2,10 @@ import os
 import ibm_boto3
 from ibm_botocore.client import Config, ClientError
 
-# Constants for IBM COS values
-COS_ENDPOINT = "https://"+"s3.eu-de.cloud-object-storage.appdomain.cloud" # Current list avaiable at https://control.cloud-object-storage.cloud.ibm.com/v2/endpoints
-COS_API_KEY_ID = "<apikey>" # eg "W00YixxxxxxxxxxMB-odB-2ySfTrFBIQQWanc--P3byk"
-COS_INSTANCE_CRN = "<>" # eg "crn:v1:bluemix:public:cloud-object-storage:global:a/3bf0d9003xxxxxxxxxx1c3e97696b71c:d6f04d83-6c4f-4a62-a165-696756d63903::"
+# Constants for IBM COS values - loaded from environment variables
+COS_API_KEY_ID = os.environ["COS_API_KEY_ID"]
+COS_INSTANCE_CRN = os.environ["COS_INSTANCE_CRN"]
+COS_ENDPOINT = os.environ.get("COS_ENDPOINT", "https://s3.eu-de.cloud-object-storage.appdomain.cloud")
 
 # Create resource
 cos_resource = ibm_boto3.resource("s3",
@@ -57,8 +57,10 @@ def upload_file(file, bucket_name):
         return key
     except ClientError as be:
         print("CLIENT ERROR: {0}\n".format(be))
+        return None
     except Exception as e:
         print("Unable to upload: {0}".format(e))
+        return None
 
 def download_file(bucket_name, key, file):
     print("Downloading {0} from bucket  {1}".format(key, bucket_name))

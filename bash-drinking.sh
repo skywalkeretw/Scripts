@@ -290,7 +290,7 @@ help () {
         echo "#     -d | --drink     The drinking game"
         echo "#     -r | --ring      Ring of Fire"
         echo "#     -m | --most      Most Likely"
-        echo "#     IF yo dont specify a mode all modes are used"
+        echo "#     If you don't specify a mode, all modes are used"
         echo "#    "
         echo "#     -h| --help      Help"
         echo "#     -l| --lang      change Language to German"
@@ -658,7 +658,7 @@ do
     echo "----------------------------------------------"
     case $MODE in
         all)
-        GAME="$(( $RANDOM % 3 ))"
+        GAME="$(( $RANDOM % 4 ))"
         case $GAME in
             0)
             getRandomNeverHaveIEver
