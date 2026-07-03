@@ -7,8 +7,8 @@ RUN apt update  \
     ffmpeg \
     python3-mutagen 
 
-RUN curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/youtube-dlp \
-    && chmod +x /usr/local/bin/youtube-dlp
+RUN curl -L https://github.com/blackjack4494/yt-dlc/releases/latest/download/youtube-dlc -o /usr/local/bin/youtube-dlc \
+    && chmod +x /usr/local/bin/youtube-dlc
 
 COPY download.sh /usr/local/bin/music
 
