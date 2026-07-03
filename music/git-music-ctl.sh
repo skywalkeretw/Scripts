@@ -7,6 +7,7 @@ GLPDIR=
 GLPREPO=
 
 ROOTDIR="~"
+GLPPATH="${ROOTDIR}/Music/"
 OS=$( uname -o || uname )
 echo "OS: $OS"
 if [[ $OS == "Android" ]]; then
@@ -85,7 +86,7 @@ fi
 # pull latest changes from master if repo exists
 
 
-case EXPRESSION in
+case "$1" in
 
   pull)
     # clone git repo if doesnt already exist
@@ -132,7 +133,7 @@ case EXPRESSION in
         git add .
         GIT_STATUS=$(git status) 
         COMMIT_MESSAGE="Adding Cover images  $(date) --- $GIT_STATUS"
-        git commit -m $COMMIT_MESSAGE
+        git commit -m "$COMMIT_MESSAGE"
         git push origin master
         GIT_RESPONSE=$?
         
@@ -146,7 +147,8 @@ case EXPRESSION in
     ;;
 
   *)
-    STATEMENTS
+    echo "Usage: $0 pull|push"
+    exit 1
     ;;
 esac
 
