@@ -9,16 +9,26 @@
 # get activation: ibmcloud fn get activation <activation_ID>
 
 help () {
-echo 'Help use ohne of these params:
-    go, php, node, python, swift, ruby  
+echo 'IBM Cloud Functions Template Generator
+
+Usage: ibmcloudFN.sh <language>
+
+Supported languages:
+    go, php, node, python, swift, ruby
+
+Note: IBM Cloud Functions (OpenWhisk) has been deprecated.
+      Consider migrating to IBM Cloud Code Engine.
 '
 }
-
-echo "creating"
 
 case $1 in
     go)
     FILENAME="main.go"
+        if [[ -f "$FILENAME" ]]; then
+            echo "Error: $FILENAME already exists. Aborting."
+            exit 1
+        fi
+        echo "Creating $1 template in $FILENAME"
         echo 'package main
 
 import "fmt"
@@ -41,6 +51,11 @@ func Main(params map[string]interface{}) map[string]interface{} {
 
     php)
     FILENAME="main.php"
+        if [[ -f "$FILENAME" ]]; then
+            echo "Error: $FILENAME already exists. Aborting."
+            exit 1
+        fi
+        echo "Creating $1 template in $FILENAME"
         echo '<?php
 
 function main(array $args) : array
@@ -54,6 +69,11 @@ function main(array $args) : array
 
     node)
     FILENAME="main.js"
+        if [[ -f "$FILENAME" ]]; then
+            echo "Error: $FILENAME already exists. Aborting."
+            exit 1
+        fi
+        echo "Creating $1 template in $FILENAME"
         echo 'function main(params) {
     return { message: "Hello World" };
 }' > $FILENAME
@@ -61,6 +81,11 @@ function main(array $args) : array
 
     python)
     FILENAME="main.py"
+        if [[ -f "$FILENAME" ]]; then
+            echo "Error: $FILENAME already exists. Aborting."
+            exit 1
+        fi
+        echo "Creating $1 template in $FILENAME"
         echo 'import sys
 
 def main(dict):
@@ -69,7 +94,12 @@ def main(dict):
 
     swift)
     FILENAME="main.swift"
-    echo 'struct Input: Codable {
+        if [[ -f "$FILENAME" ]]; then
+            echo "Error: $FILENAME already exists. Aborting."
+            exit 1
+        fi
+        echo "Creating $1 template in $FILENAME"
+        echo 'struct Input: Codable {
     let name: String?
 }
 struct Output: Codable {
@@ -83,6 +113,11 @@ func main(param: Input, completion: (Output?, Error?) -> Void) -> Void {
 
     ruby)
     FILENAME="main.rb"
+        if [[ -f "$FILENAME" ]]; then
+            echo "Error: $FILENAME already exists. Aborting."
+            exit 1
+        fi
+        echo "Creating $1 template in $FILENAME"
         echo 'def main(param)
 name = param["name"] || "stranger"
 greeting = "Hello #{name}!"
@@ -93,14 +128,13 @@ end' > $FILENAME
     
     help | -h | --help)
         help
-        exit 1
+        exit 0
     ;;
 
     *)
-        echo "$1 doesn't exist"
+        echo "Error: '$1' is not a supported language"
+        echo "Run 'ibmcloudFN.sh --help' for usage information"
         exit 1
     ;;
 
 esac
-
-echo "Creating $1 template in $FILENAME"
