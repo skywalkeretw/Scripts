@@ -1,12 +1,12 @@
-from ast import Try
 import git # https://gitpython.readthedocs.io/en/stable/
 import gitlab # https://python-gitlab.readthedocs.io/en/stable/index.html
 import os, sys, stat
 import uuid
 import shutil
+import subprocess
 
-# Create SSH KEY and connect to git returns error object or false if succesful
-def setupSSH(key, hostname):
+# Create SSH KEY and connect to git returns error object or False if successful
+def setupSSH(key, hostname, r):
     print("---> Setting Up Connection to git")
     sshdir = '/root/.ssh'
     if not os.path.exists(sshdir):
@@ -15,7 +15,7 @@ def setupSSH(key, hostname):
     else:
         print("---> .ssh dir exists")
 
-    with open( sshdir + '/id_rsa', 'w') as f:
+    with open(sshdir + '/id_rsa', 'w') as f:
         f.write(key)
         f.close()
     
@@ -31,7 +31,7 @@ def setupSSH(key, hostname):
     return False
 
 # gitlab function to create Merge Request
-def mergeRequest(hostname, token, repoURL, branch, merge):
+def mergeRequest(hostname, token, repoURL, branch, merge, r):
     # Login to Gitlab
     print(f"---> Login to {hostname}")
     gl = gitlab.Gitlab(private_token=token)
@@ -52,8 +52,8 @@ def mergeRequest(hostname, token, repoURL, branch, merge):
     print(f"---> Merge URL: {mr.web_url}")
     r["url"] = mr.web_url
 
-    # If params is set Merge Pull/Merge request :todo fix
-    if (merge != False or merge != "false") :
+    # If params is set Merge Pull/Merge request
+    if merge and merge != "false":
         try:
             mr.merge()
             r["message"] = "Successfully downloaded Music, Created Pull/Merge request and merge it automatically 1"
@@ -92,15 +92,14 @@ def mergeRequest(hostname, token, repoURL, branch, merge):
 #     }]
 # }
 
-# Return Structure Data
-r = {
-    "message": "Action Failed!",
-    "error": True,
-    "url": "",
-    "branch": ""
-}
-
 def main(params):
+    # Initialize response dict inside main to avoid state leaks between invocations
+    r = {
+        "message": "Action Failed!",
+        "error": True,
+        "url": "",
+        "branch": ""
+    }
     print("---> Start")
     # Check Keys
     print("---> Checking Params")
@@ -131,7 +130,7 @@ def main(params):
     hostname = repoURL.split("@",1)[1].split(":",1)[0]
 
     # setup SSH Connection to git 
-    returnValue = setupSSH(key, hostname)
+    returnValue = setupSSH(key, hostname, r)
     if returnValue != False:
         return returnValue
 
@@ -175,8 +174,11 @@ def main(params):
 
         # Download and Tag Song to git repository
         print(f"---> Run music Script for: {song} - {artist} - {album} - {url}")
-        cmdString = f'music \"{song}\" \"{artist}\" \"{album}\" \"{url}\"'
-        code = os.system(cmdString)
+        result = subprocess.run(
+            ["music", song, artist, album, url],
+            capture_output=True
+        )
+        code = result.returncode
 
         if code == 0:
             print(f"---> Downloaded and Tagged {song} by {artist}")
@@ -207,7 +209,7 @@ def main(params):
 
     # Create Merge Request
     if hostname == "gitlab.com":
-        return mergeRequest(hostname, token, repoURL, branch, merge)
+        return mergeRequest(hostname, token, repoURL, branch, merge, r)
 
     # Downloaded music without creating a Pull/Merge request
     r["message"] = "Successfully downloaded Music"
