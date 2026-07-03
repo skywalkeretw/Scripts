@@ -4,6 +4,24 @@ setopt PROMPT_SUBST
 autoload colors
 colors
 # list colors: spectrum_ls
+
+# Cache kubectl context to avoid calling kubectl on every prompt render
+_kube_context_cache=""
+_kube_context_cache_time=0
+
+function _update_kube_context_cache() {
+    local current_time=$(date +%s)
+    # Update cache every 5 seconds
+    if (( current_time - _kube_context_cache_time > 5 )); then
+        _kube_context_cache=$(kubectl config current-context 2>/dev/null || echo "not set")
+        _kube_context_cache_time=$current_time
+    fi
+}
+
+# Hook to update cache before each prompt
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd _update_kube_context_cache
+
 #GIT Status
 ZSH_THEME_GIT_PROMPT_PREFIX=" %{$FG[118]%}-%f %{$FG[046]%}(%f"
 ZSH_THEME_GIT_PROMPT_SUFFIX="%{$FG[046]%})%f"
@@ -28,6 +46,6 @@ ZSH_THEME_GIT_PROMPT_DIVERGED=""           # Displayed when the local and remote
 #LASTCMDS:  %{$FG[046]%}[%f%(?.✔.%{$fg[red]%}✘%f)%{$FG[046]%}]%f                                                                                                                                                                            -> %(?.✔.%{$fg[red]%}✘%f)
 #IBMCLOUD:  %{$FG[046]%}[%f$(if ibmcloud account show  2>/dev/null; then ibmcloud account show  2>/dev/null | grep "Account Name:" | sed  "s/Account Name://" | xargs ; else echo "%{$FG[160]%}IBMCLOUD%fIBMCLOUD"; fi)%{$FG[046]%}]%f      ->  if ibmcloud account show  2>/dev/null; then ibmcloud account show  2>/dev/null | grep "Account Name:" | sed  "s/Account Name://" | xargs ; else echo "%{$FG[160]%}IBMCLOUD%fIBMCLOUD"; fi                                                                             
 #lLINE:     %{$FG[118]%}-%f
-PROMPT='%{$FG[046]%}╭%f%{$FG[046]%}[%f%{$FG[087]%}%0~/%f%{$FG[046]%}]%f$(git_prompt_info) %{$FG[118]%}-%f %{$FG[046]%}[%f$(if ibmcloud account show 1>/dev/null  2>/dev/null; then ibmcloud account show --output JSON  2>/dev/null | grep "\"name\": \"" | sed  "s/ \"name\": \"//" | sed "s/\",//" | tr -s "[:space:]" ; else echo "%{$FG[160]%}IBMCLOUD%f"; fi)%{$FG[046]%}]%f %{$FG[118]%}-%f %{$FG[046]%}[%f🚀 $(kubectl config current-context 2>/dev/null || echo "not set")%{$FG[046]%}]%f %{$FG[118]%}-%f %{$FG[046]%}[%f%*%{$FG[046]%}]%f %{$FG[118]%}-%f %{$FG[046]%}[%f%(?.✔.%{$fg[red]%}✘%f)%{$FG[046]%}]%f
+PROMPT='%{$FG[046]%}╭%f%{$FG[046]%}[%f%{$FG[087]%}%0~/%f%{$FG[046]%}]%f$(git_prompt_info) %{$FG[118]%}-%f %{$FG[046]%}[%f$(if ibmcloud account show 1>/dev/null  2>/dev/null; then ibmcloud account show --output JSON  2>/dev/null | grep "\"name\": \"" | sed  "s/ \"name\": \"//" | sed "s/\",//" | tr -s "[:space:]" ; else echo "%{$FG[160]%}IBMCLOUD%f"; fi)%{$FG[046]%}]%f %{$FG[118]%}-%f %{$FG[046]%}[%f🚀 ${_kube_context_cache}%{$FG[046]%}]%f %{$FG[118]%}-%f %{$FG[046]%}[%f%*%{$FG[046]%}]%f %{$FG[118]%}-%f %{$FG[046]%}[%f%(?.✔.%{$fg[red]%}✘%f)%{$FG[046]%}]%f
 %{$FG[046]%}╰→%f%{$FG[172]%}%n%f 🍻 '
 #RPROMPT='%{$FG[046]%}[%f🚀: $(kubectl config current-context 2>/dev/null || echo "not set")%{$FG[046]%}]%f %{$FG[046]%}[%f%*%{$FG[046]%}]%f %{$FG[046]%}[%f%(?.✔.%{$fg[red]%}✘%f)%{$FG[046]%}]%f'
