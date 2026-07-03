@@ -1,1 +1,4 @@
 notes.txt
+.bob/
+.DS_Store
+backup-script/backup-conf.json
