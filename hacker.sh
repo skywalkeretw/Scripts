@@ -31,10 +31,15 @@ MSG "Operation Troya Activated: Trojan Deployed"
 
 MSG "EXECUTE!" 4
 
-for i in {1..$ROUNDS}; do 
-    a=$(echo $i | md5)
-    b=$(echo $i +1 | md5)
-    echo ${a}${b}
+for i in $(seq 1 "$ROUNDS"); do 
+    if command -v md5sum &>/dev/null; then
+        a=$(echo "$i" | md5sum | cut -d' ' -f1)
+        b=$(echo "$((i + 1))" | md5sum | cut -d' ' -f1)
+    else
+        a=$(echo "$i" | md5)
+        b=$(echo "$((i + 1))" | md5)
+    fi
+    echo "${a}${b}"
 done
 sleep 2
 clear
